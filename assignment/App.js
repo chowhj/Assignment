@@ -19,12 +19,12 @@ import {
   DrawerContentScrollView,
   DrawerItemList,
 } from '@react-navigation/drawer';
-import AboutScreen from './wirelesstask/screens/AboutScreen';
-import HomeScreen from './wirelesstask/screens/HomeScreen';
-import BookingScreen from './wirelesstask/screens/BookingScreen';
-import ProfileScreen from './wirelesstask/screens/ProfileScreen';
-import SettingsScreen from './wirelesstask/screens/SettingsScreen';
-import SignoutScreen from './wirelesstask/screens/SignoutScreen';
+import AboutScreen from './wireless_task/screens/AboutScreen';
+import HomeScreen from './wireless_task/screens/HomeScreen';
+import BookingScreen from './wireless_task/screens/BookingScreen';
+import ProfileScreen from './wireless_task/screens/ProfileScreen';
+import SettingsScreen from './wireless_task/screens/SettingsScreen';
+import SignoutScreen from './wireless_task/screens/SignoutScreen';
 import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer, StackActions} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
@@ -44,7 +44,7 @@ class MyDrawerComponent extends Component {
           contentContainerStyle={{backgroundColor: 'skyblue'}}
         >
           <ImageBackground
-            source={require ('./wirelesstask/img/icon.jpeg')}
+            source={require ('./wireless_task/img/icon.jpeg')}
             style={{padding: 10}}
           >
             <Image
@@ -55,7 +55,7 @@ class MyDrawerComponent extends Component {
                 marginLeft: 20,
                 borderRadius: 32,
               }}
-              source={require ('./wirelesstask/img/hotel.jpeg')}
+              source={require ('./wireless_task/img/hotel.jpeg')}
             />
             <Text
               style={{
