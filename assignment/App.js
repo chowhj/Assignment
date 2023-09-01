@@ -19,11 +19,12 @@ import {
   DrawerContentScrollView,
   DrawerItemList,
 } from '@react-navigation/drawer';
-import AboutScreen from './task/screens/AboutScreen';
-import HomeScreen from './task/screens/HomeScreen';
-import ProfileScreen from './task/screens/ProfileScreen';
-import SettingsScreen from './task/screens/SettingsScreen';
-import SignoutScreen from './task/screens/SignoutScreen';
+import AboutScreen from './wirelesstask/screens/AboutScreen';
+import HomeScreen from './wirelesstask/screens/HomeScreen';
+import BookingScreen from './wirelesstask/screens/BookingScreen';
+import ProfileScreen from './wirelesstask/screens/ProfileScreen';
+import SettingsScreen from './wirelesstask/screens/SettingsScreen';
+import SignoutScreen from './wirelesstask/screens/SignoutScreen';
 import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer, StackActions} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
@@ -43,7 +44,7 @@ class MyDrawerComponent extends Component {
           contentContainerStyle={{backgroundColor: 'skyblue'}}
         >
           <ImageBackground
-            source={require ('./task/img/hotel.jpeg')}
+            source={require ('./wirelesstask/img/icon.jpeg')}
             style={{padding: 10}}
           >
             <Image
@@ -54,7 +55,7 @@ class MyDrawerComponent extends Component {
                 marginLeft: 20,
                 borderRadius: 32,
               }}
-              source={require ('./task/img/icon.jpeg')}
+              source={require ('./wirelesstask/img/hotel.jpeg')}
             />
             <Text
               style={{
@@ -197,8 +198,25 @@ export default class App extends Component {
               marginLeft: -24,
               fontFamily: 'EduQLDBeginner-Regular',
             },
+            headerStyle: {
+              backgroundColor: '#00008B',
+            },
+            headerTitleAlign: 'center',
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
           }}
         >
+          <Drawer.Screen
+            name="Profile"
+            component={ProfileScreen}
+            options={{
+              drawerIcon: ({ color }) => (
+                <Ionicons name="man-outline" size={20} color={color} />
+              ),
+            }}/>
+          
           <Drawer.Screen
             name="About"
             component={AboutScreen}
@@ -218,13 +236,13 @@ export default class App extends Component {
             }} />
 
           <Drawer.Screen
-            name="Profile"
-            component={ProfileScreen}
+            name="Booking"
+            component={BookingScreen}
             options={{
               drawerIcon: ({ color }) => (
-                <Ionicons name="man-outline" size={20} color={color} />
+                <Ionicons name="book-outline" size={20} color={color} />
               ),
-            }} />
+            }}/>
 
           <Drawer.Screen
             name="Others"
@@ -258,4 +276,3 @@ const styles = StyleSheet.create ({
     margin: 0,
   },
 });
-
