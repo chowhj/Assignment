@@ -19,12 +19,12 @@ import {
   DrawerContentScrollView,
   DrawerItemList,
 } from '@react-navigation/drawer';
-import AboutScreen from './task/screens/AboutScreen';
-import HomeScreen from './task/screens/HomeScreen';
-import BookingScreen from './task/screens/BookingScreen';
-import ProfileScreen from './task/screens/ProfileScreen';
-import SettingsScreen from './task/screens/SettingsScreen';
-import SignoutScreen from './task/screens/SignoutScreen';
+import AboutScreen from './wirelesstask/screens/AboutScreen';
+import HomeScreen from './wirelesstask/screens/HomeScreen';
+import BookingScreen from './wirelesstask/screens/BookingScreen';
+import ProfileScreen from './wirelesstask/screens/ProfileScreen';
+import SettingsScreen from './wirelesstask/screens/SettingsScreen';
+import SignoutScreen from './wirelesstask/screens/SignoutScreen';
 import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer, StackActions} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
@@ -44,7 +44,7 @@ class MyDrawerComponent extends Component {
           contentContainerStyle={{backgroundColor: 'skyblue'}}
         >
           <ImageBackground
-            source={require ('./task/img/icon.jpeg')}
+            source={require ('./wirelesstask/img/icon.jpeg')}
             style={{padding: 10}}
           >
             <Image
@@ -55,7 +55,7 @@ class MyDrawerComponent extends Component {
                 marginLeft: 20,
                 borderRadius: 32,
               }}
-              source={require ('./task/img/hotel.jpeg')}
+              source={require ('./wirelesstask/img/hotel.jpeg')}
             />
             <Text
               style={{
