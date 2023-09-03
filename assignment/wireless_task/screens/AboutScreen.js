@@ -12,94 +12,115 @@ import {
   Dimensions,
   Platform, 
   SafeAreaView,
+  StatusBar,
 } from "react-native";
 
+import 'react-native-gesture-handler'
+import PropTypes from 'prop-types'
 import { ViewPropTypes } from 'deprecated-react-native-prop-types';
+import ImageCarousel from '../../ImageCarousel';
 
 
-const ENTRIES1 = [
+const restaurants: ImageCarouselItem[] = [
   {
-    title:"ROOM 1",
-    image: require('../img/aboutscreen/image1.png'),
+    id:0,
+    title:"Restaurant",
+    image: require('../img/aboutscreen/restaurant1.png'),
   },
   {
-    title:"ROOM 2",
-    image: require('../img/aboutscreen/image2.png'),
+    id:1,
+    title:"Restaurant",
+    image: require('../img/aboutscreen/restaurant2.png'),
   },
   {
-    title:"ROOM 3",
-    image: require('../img/aboutscreen/image3.png'),
+    id:2,
+    title:"Restaurant",
+    image: require('../img/aboutscreen/restaurant3.png'),
   },
   {
-    title:"ROOM 4",
-    image: require('../img/aboutscreen/image4.png'),
+    id:3,
+    title:"Restaurant",
+    image: require('../img/aboutscreen/restaurant4.jpg'),
   },
   {
-    title:"ROOM 5",
-    image: require('../img/aboutscreen/image5.png'),
+    id:4,
+    title:"Restaurant",
+    image: require('../img/aboutscreen/restaurant5.jpg'),
+  },
+]
+
+const outdoor: ImageCarouselItem[] = [
+  {
+    id:0,
+    title:"Blue Safari Submarine",
+    image: require('../img/aboutscreen/submarine.jpg'),
+  },
+  {
+    id:1,
+    title:"Blue Bay Marine Park",
+    image: require('../img/aboutscreen/marine.jpg'),
+  },
+  {
+    id:2,
+    title:"Kitesurf",
+    image: require('../img/aboutscreen/Kitesurf.jpg'),
+  },
+  {
+    id:3,
+    title:"Big game fishing",
+    image: require('../img/aboutscreen/fishing.jpg'),
+  },
+  {
+    id:4,
+    title:"Catamaran",
+    image: require('../img/aboutscreen/catamaran.jpg'),
+  },
+  {
+    id:5,
+    title:"Parasailing",
+    image: require('../img/aboutscreen/parasailing.jpg'),
   },
 
-];
+]
 
-const {width: screenWidth} = Dimensions.get('window');
+const welness: ImageCarouselItem[] = [
+  {
+    id:0,
+    title:" Fitness Center",
+    image: require('../img/aboutscreen/Welness1.jpeg'),
+  },
+  {
+    id:1,
+    title:"Seafit Center",
+    image: require('../img/aboutscreen/welness2.jpeg'),
+  },
+  {
+    id:2,
+    title:"Facial Treament",
+    image: require('../img/aboutscreen/welness3.png'),
+  },
+  {
+    id:3,
+    title:"Hand massage",
+    image: require('../img/aboutscreen/welness4.jpg'),
+  },
+  {
+    id:4,
+    title:"Body massage",
+    image: require('../img/aboutscreen/welness5.png'),
+  },
+]
 
-const MyCarousel = props => {
-  const [entries, setEntries] = useState([]);
-  const carouselRef = useRef(null);
-
-  const goForward = () => {
-    carouselRef.current.snapToNext();
-  };
-
-  useEffect(() => {
-    setEntries(ENTRIES1);
-  }, []);
-
-  const renderItem = ({item, index}, parallaxProps) => {
-    return (
-      <View style={styles.item}>
-        <ParallaxImage
-          source={item.image}
-          containerStyle={styles.imageContainer}
-          style={styles.image}
-          parallaxFactor={0.4}
-          {...parallaxProps}
-        />
-        <Text style={styles.title} numberOfLines={2}>
-          {item.title}
-        </Text>
-      </View>
-    );
-  };
-
-  return (
-    <View>
-      <TouchableOpacity onPress={goForward}>
-        <Text>The next room view</Text>
-      </TouchableOpacity>
-      <Carousel
-        ref={carouselRef}
-        sliderWidth={screenWidth}
-        sliderHeight= {screenWidth}
-        itemWidth={screenWidth - 60}
-        data={entries}
-        renderItem={renderItem}
-        hasParallaxImages={true}
-      />
-    </View>
-  );
-}
 
 export default class AboutScreen extends Component{
 
+
     render(){
         return(
-            <View style={styles.container}>
+            <SafeAreaView style={styles.container}>
                 <View style={styles.welcome}>
-                  <ScrollView>
+                  <ScrollView persistentScrollbar={true} >
                     <Text style={styles.welcomeText}>Superstar Villa Hotel Resort</Text>
-                    <Text style={styles.introtext}>Hotel Room View</Text>
-                    <MyCarousel/>
                     <Text style={styles.welcomeText}>ABOUT US</Text>
                     <Text style={styles.about}>SuperVilla Star Resort is a hotel chain of the Mauritian brand that offers 
                     5 hotels perfect for those looking for a unique and unforgettable stay in Mauritius. SuperVilla Star Resort is 
@@ -110,6 +131,66 @@ export default class AboutScreen extends Component{
                     Asian, Africa and Reunion Island. The hotels are marketed from 4 to 5 stars categories, and each hotel targets specific segments 
                     from Adult-Only boutique hotel customers, couples, honeymooners, weddings, families, 
                     nature lovers, leisure travelers, groups and business travel.</Text>
+                    <Text style={{fontSize:22,color: '#2B547E'}}>Facilities:</Text>
+                    <Text style={{fontSize:22,color: '#2B547E'}}>Restaurant & Bar Gallery:</Text>
+                    <View style ={styles.box}>
+                        <Text style={styles.intro}>
+                        Part of the Superstar Villa Hotel experience is indulging in the most authentic and delicious dishes this beautiful island has to offer.
+                        From the catch of the day to local fresh ingredients, 
+                        every plate we offer is made with care and diligence to give you an authentic experience! 
+                        The discreet SeaForest Restaurant facing an infinity pool serves authentic and local venison meat dishes and 
+                        other delights from the estate, as well as an international cuisine selection. 
+                        Indulge in breakfast, lunch, and dinner with breathtaking panoramic views of the forests of Chamarel, 
+                        Bel Ombre and ocean views of the south coast.
+                        </Text>
+                        <StatusBar barStyle="light-content" />
+                        <ImageCarousel data={restaurants} />
+                        <Text></Text>
+                    </View>
+                    <Text></Text>
+                    <Text style ={{fontSize:22,color: '#2B547E'}}>Sea & Water Outdoor Acivities:</Text>
+                    <View style ={styles.box2}>
+                        <Text style={styles.intro2}>SuperVilla Star Resort have various sea & water activities such as 
+                        Blue Safari Submarine which is the only operator of real submarines in the Indian Ocean.
+                        During your 40-minutes dive, amongst multicoloured fish, you will discover the beauty of the corals 
+                        and who knows what surprise awaits you. Our pilots, trained in marine biology, will guide you through your dive.SuperVilla Star Resort have various sea & water activities such as 
+                        Blue Safari Submarine which is the only operator of real submarines in the Indian Ocean.
+                        During your 40-minutes dive, amongst multicoloured fish, you will discover the beauty of the corals 
+                        and who knows what surprise awaits you. Our pilots, trained in marine biology, will guide you through your dive. 
+                        Blue Bay Marine Park is also one of the interesting sea & water activity.
+                        For Kitesurf, Beginners and confirmed kiters can enjoy the vastness of the La Prairie / Baie du Cap lagoon, 
+                        providing a shallow and safe environment and allows downwind glides to Le Morne.
+                        Big Game Fishing Its tropical waters are home to blue and black stripe marlin, sharks, tuna, sail fish, bonitos, Wahoo, Dorado and the bécune. 
+                        The most popular season for international anglers is from September to March, but big game fishing is possible year round. 
+                        Your experience will be unsurpassed and unique from any fishing excursion you have been on before.
+                        Catamaran trip in Mauritius is considered to be one of the best attractions in Mauritius. It is undoubtedly 
+                        one of the most enjoyable activities for visitors to Mauritius and a great experience to remember and cherish. 
+                        You will get to discover the beauty of Mauritius Paradise Island, one of the most beautiful travel destinations 
+                        in the world with superb coral reefs, crystal clear water, beautiful lagoons, stunning unspoiled beaches 
+                        and amazing underwater world.</Text>
+                        <Text></Text>
+                        <StatusBar barStyle="dark-content" />
+                        <ImageCarousel data={outdoor} />
+                        <Text></Text>
+                    </View>
+                    <Text></Text>
+                    <Text style ={{fontSize:22,color: '#2B547E'}}>Wellness Activities:</Text>
+                    <View style ={styles.box3}>
+                        <Text style={styles.intro3}>
+                        Superstar Villa Hotel & Spa will be your guide to a serene vacation. Yield to the healing hands of our therapists and tailored treatments,
+                        where body and mind are nurtured to an ultimate state of relaxation and wellbeing. 
+                        From massages, facial treatments to skin care, we have the ideal remedy to keep you feeling blissful throughout your island getaway.
+                        Head over to Sea Superstar Villa Fitness Center for your daily workout or be at peace at our yoga classes. 
+                        Our qualified instructors will keep you in shape during your stay.
+                        Seaspa will be your guide to a serene vacation. yield to the healing hands of our therapists and tailored treatments where body and spirit are nurtured to an ultimate state of relaxation and wellbeing. 
+                        Fom massages, to facial treatments to skin care. we have the ideal remedy to keep you feeling blissful throughout your island getaway.
+                        </Text>
+                        <Text></Text>
+                        <StatusBar barStyle="light-content" />
+                        <ImageCarousel data={welness} />
+                        <Text></Text>
+                    </View>
+                    <Text></Text>
                     <Text style ={styles.welcomeText}>Why Choose Us ?</Text>
                     <View style ={styles.choosetext}>
                       <Text style ={styles.linetext}>We offer our customers a unique, personalized experience and the chance to explore the beautiful island 
@@ -119,9 +200,8 @@ export default class AboutScreen extends Component{
                         to ensure you have an unforgettable holiday in Mauritius!</Text>
                     </View>
                   </ScrollView>
-                
                 </View>
-            </View>
+            </SafeAreaView>
 
         )
     }
@@ -139,7 +219,6 @@ const styles = StyleSheet.create({
       justifyContent:'flex-start',
       padding:1,
     },
-
     welcome: {
         alignItems: 'flex-start',
         justifyContent:'center',
@@ -157,36 +236,21 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         fontSize:20,
         textAlign: 'center',
-        color: '#1F6357',
+        color: '#151B8D',
       },
-    item: {
-        width: screenWidth - 60,
-        height: screenWidth - 60,
-      },
-    imageContainer: {
-        flex: 1,
-        marginBottom: Platform.select({ios: 0, android: 1}), // Prevent a random Android rendering issue
-        backgroundColor: 'white',
-        borderRadius: 8,
-      },
-    image:{
-      width: 50,
-      height: 50,
-      margin: 10,
-    },
     title:{
         alignItems: 'center',
         justifyContent: 'center',
         fontSize:20,
         textAlign: 'center',
         color: '#0000A5',
-      },  
+      },
     about:{
         alignItems: 'center',
         justifyContent: 'center',
-        fontSize:13,
+        fontSize:15,
         textAlign: 'center',
-        color: '#6F2DA8',
+        color: '#151B54',
       }, 
     choosetext:{
       flex:1,
@@ -197,7 +261,33 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       fontSize:14,
       textAlign: 'center',
-      color: '#4B0150',
-    },  
-    
+      color: '#6E2C00',
+    }, 
+    box:{
+      flex:1,
+      backgroundColor: '#D6EAF8',
+    },
+    intro:{
+      fontSize:14,
+      textAlign: 'center',
+      color: '#0000A5',
+    }, 
+    box2:{
+      flex:1,
+      backgroundColor: '#F5EEF8',
+    },
+    intro2:{
+      fontSize:14,
+      textAlign: 'center',
+      color: '#512E5F',
+    }, 
+    box3:{
+      flex:1,
+      backgroundColor: '#D5F5E3',
+    },
+    intro3:{
+      fontSize:14,
+      textAlign: 'center',
+      color: '#0B5345',
+    }, 
 });

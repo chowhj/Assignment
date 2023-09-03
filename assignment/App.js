@@ -19,6 +19,10 @@ import {
   DrawerContentScrollView,
   DrawerItemList,
 } from '@react-navigation/drawer';
+import { ViewPropTypes } from 'deprecated-react-native-prop-types';
+import 'react-native-gesture-handler'
+import PropTypes from 'prop-types'
+
 import AboutScreen from './wireless_task/screens/AboutScreen';
 import HomeScreen from './wireless_task/screens/HomeScreen';
 import BookingScreen from './wireless_task/screens/BookingScreen';
