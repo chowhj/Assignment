@@ -16,7 +16,7 @@ const SPACING = 5;
 const ITEM_LENGTH = width * 0.5; // Item is a square. Therefore, its height and width are of the same length.
 const BORDER_RADIUS = 20;
 
-const ImageCarousel: FC<ImageCarouselProps> = ({ data }) => {
+const ImageCarousel = ({ data }) => {
   return (
     <View style={styles.container}>
       <FlatList

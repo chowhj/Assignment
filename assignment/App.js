@@ -9,7 +9,7 @@ import {
   Button,
   SafeAreaView,
   ImageBackground,
-  TouchableNativeFeedbackBase,
+  TouchableWithoutFeedback,
   TouchableNativeFeedback,
   TouchableOpacity,
   TouchableHighlight,
@@ -22,6 +22,8 @@ import {
 import { ViewPropTypes } from 'deprecated-react-native-prop-types';
 import 'react-native-gesture-handler'
 import PropTypes from 'prop-types'
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/AntDesign';
 
 import AboutScreen from './wireless_task/screens/AboutScreen';
 import HomeScreen from './wireless_task/screens/HomeScreen';
@@ -29,17 +31,20 @@ import BookingScreen from './wireless_task/screens/BookingScreen';
 import ProfileScreen from './wireless_task/screens/ProfileScreen';
 import SettingsScreen from './wireless_task/screens/SettingsScreen';
 import SignoutScreen from './wireless_task/screens/SignoutScreen';
+import LoginScreen from './wireless_task/screens/LoginScreen';
+
 import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer, StackActions} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import {LogBox} from 'react-native';
 LogBox.ignoreLogs (['EventEmitter.removeListener']);
 
 const Drawer = createDrawerNavigator ();
-const Tab = createBottomTabNavigator ();
-
+//const Tab = createBottomTabNavigator ();
+const Tab = createMaterialBottomTabNavigator();
 class MyDrawerComponent extends Component {
+  
   render () {
     return (
       <View style={{flex: 1}}>
@@ -154,34 +159,43 @@ class MyDrawerComponent extends Component {
 
 function MyTab () {
   return (
-       <Tab.Navigator initialRouteName={'Setings'}
-          screenOptions={{
-            tabBarActiveTintColor:'#800080',
-            tabBarActiveBackgroundColor:'#ADD8E6',
-            tabBarLabelStyle:{
-              fontSize:22,
-            },
-            tabBarStyle:{
-              backgroundColor:'silver',
-              borderRadius:50
-            },
-          }}
-        >
+       <Tab.Navigator 
+        initialRouteName={'Settings'}
+        barStyle={{ backgroundColor: '#E6E6FA' ,padding: 0 }}
+        activeColor='#0000A5'
+        inactiveColor='grey'
+        shifting='true'
+         >
+
           <Tab.Screen
             name="Settings"
             component={SettingsScreen}
             options={{
+              tabBarLabel: 'Settings',
               tabBarIcon: () => {
-                return <Ionicons name="settings-outline" size={20} color={'blue'} />;
+                return <Ionicons name="settings-outline" size={26} color={'#940073'} />
+                ;
               },
             }}
           />
+ 
           <Tab.Screen
             name="Signout"
             component={SignoutScreen}
             options={{
+              tabBarLabel:'Sign Out',
               tabBarIcon: () => {
-                return <Ionicons name="exit-outline" size={20} color={'blue'} />;
+                return <Ionicons name="exit-outline" size={26} color={'#940073'} />;
+              },
+            }}
+          />
+          <Tab.Screen
+            name="Login"
+            component={LoginScreen}
+            options={{
+              tabBarLabel:'Login',
+              tabBarIcon: () => {
+                return <Ionicons name="enter-outline" size={26} color={'#940073'} />;
               },
             }}
           />
@@ -210,14 +224,30 @@ export default class App extends Component {
             headerTitleStyle: {
               fontWeight: 'bold',
             },
+           // headerRight: () => (
+              //<TouchableWithoutFeedback
+                  //onPress={() => this.props.navigation.navigate('Home')}>
+                  //</NavigationContainer><Ionicons name="arrow-back" size={25} color="#00FFFF" />
+              //</TouchableWithoutFeedback>
+            //)
           }}
         >
+
+          <Drawer.Screen
+            name="Home"
+            component={HomeScreen}
+            options={{
+              drawerIcon: ({ color }) => (
+                <Ionicons name="home-outline" size={20} color={color} />
+              ),
+            }} />
+
           <Drawer.Screen
             name="Profile"
             component={ProfileScreen}
             options={{
               drawerIcon: ({ color }) => (
-                <Ionicons name="man-outline" size={20} color={color} />
+                <Icon name="user" size={20} color={color} />
               ),
             }}/>
           
@@ -231,30 +261,38 @@ export default class App extends Component {
             }} />
 
           <Drawer.Screen
-            name="Home"
-            component={HomeScreen}
-            options={{
-              drawerIcon: ({ color }) => (
-                <Ionicons name="home-outline" size={20} color={color} />
-              ),
-            }} />
-
-          <Drawer.Screen
             name="Booking"
             component={BookingScreen}
             options={{
               drawerIcon: ({ color }) => (
                 <Ionicons name="book-outline" size={20} color={color} />
               ),
-            }}/>
+              }}/>
 
           <Drawer.Screen
-            name="Others"
+            name="More"
             component={MyTab}
             options={{
               drawerIcon: ({ color }) => (
                 <Ionicons name="add-outline" size={20} color={color} />
               ),
+            }} />
+
+            <Drawer.Screen
+              name="Settings"
+              component={SettingsScreen}
+              options={{
+                  drawerLabel: () => null,
+                  drawerIcon: () => null,
+            }} />
+
+            <Drawer.Screen
+              name="Signout"
+              component={SignoutScreen}
+              options={{
+                  drawerLabel: () => null,
+                  drawerIcon: () => null,
+                  
             }} />
 
         </Drawer.Navigator>
@@ -269,7 +307,7 @@ const styles = StyleSheet.create ({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    backgroundColor: '#F0FFFF',
   },
   title: {
     fontSize: 20,

@@ -13,15 +13,18 @@ import {
   Platform, 
   SafeAreaView,
   StatusBar,
+  Button,
+  TouchableWithoutFeedback
 } from "react-native";
 
 import 'react-native-gesture-handler'
 import PropTypes from 'prop-types'
 import { ViewPropTypes } from 'deprecated-react-native-prop-types';
 import ImageCarousel from '../../ImageCarousel';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 
-const restaurants: ImageCarouselItem[] = [
+const restaurants = [
   {
     id:0,
     title:"Restaurant",
@@ -49,7 +52,7 @@ const restaurants: ImageCarouselItem[] = [
   },
 ]
 
-const outdoor: ImageCarouselItem[] = [
+const outdoor= [
   {
     id:0,
     title:"Blue Safari Submarine",
@@ -83,7 +86,7 @@ const outdoor: ImageCarouselItem[] = [
 
 ]
 
-const welness: ImageCarouselItem[] = [
+const welness= [
   {
     id:0,
     title:" Fitness Center",
@@ -111,21 +114,29 @@ const welness: ImageCarouselItem[] = [
   },
 ]
 
-
 export default class AboutScreen extends Component{
-
-
     render(){
         return(
             <SafeAreaView style={styles.container}>
                 <View style={styles.welcome}>
+                <TouchableWithoutFeedback
+                   onPress={() => {this.props.navigation.navigate('Home');
+                   }}
+                >
+                  <View style ={styles.touch} flexDirection="row">
+                    <Ionicons name="arrow-back" size={25} color={'#1AA260'} />
+                    <Text style = {{color:'#045D5D'}}>Back To Home Screen</Text>
+                  </View>
+                </TouchableWithoutFeedback>
                   <ScrollView persistentScrollbar={true} >
-                    <Text style={styles.welcomeText}>Superstar Villa Hotel Resort</Text>
-                    <Text style={styles.welcomeText}>ABOUT US</Text>
+                    <Text style={styles.welcomeText}>
+                    Superstar Villa Hotel Resort
+                      <Text> </Text>
+                    ABOUT US</Text>
                     <Text style={styles.about}>SuperVilla Star Resort is a hotel chain of the Mauritian brand that offers 
                     5 hotels perfect for those looking for a unique and unforgettable stay in Mauritius. SuperVilla Star Resort is 
                     specialized in boutique hotel accommodation and services in Mauritius.
-                    Started in 2015 with one hotel namely Seapoint Boutique Hotel of 22 rooms in the north of the island.
+                    Started in 2015 with one hotel namely Superstar Villa Hotel of 59 rooms in the north of the island.
                     Today the group has reached an inventory 
                     of 216 keys daily altogether and our customers are sourced from European countries, 
                     Asian, Africa and Reunion Island. The hotels are marketed from 4 to 5 stars categories, and each hotel targets specific segments 
@@ -290,4 +301,10 @@ const styles = StyleSheet.create({
       textAlign: 'center',
       color: '#0B5345',
     }, 
+    touch: {
+      alignItems: 'flex-start',
+      justifyContent: 'flex-start',
+      backgroundColor: '#C3FDB8',
+      borderRadius: 7,
+  },
 });
