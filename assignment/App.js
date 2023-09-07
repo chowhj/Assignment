@@ -6,7 +6,7 @@ import {
   Image,
   View,
   Text,
-  Button,
+  Alert,
   SafeAreaView,
   ImageBackground,
   TouchableNativeFeedbackBase,
@@ -31,6 +31,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {LogBox} from 'react-native';
 import LoginScreen from './wireless_task/screens/LoginScreen';
+import SignupScreen from './wireless_task/screens/SignupScreen';
 LogBox.ignoreLogs (['EventEmitter.removeListener']);
 
 const Stack = createStackNavigator();
@@ -129,7 +130,18 @@ class MyDrawerComponent extends Component {
           </TouchableOpacity>
 
           <TouchableOpacity style={{paddingVertical: 10}}
-            onPress={() => this.props.navigation.navigate('Signout')}>
+            onPress={() => {
+              Alert.alert("Logging out", "Are you sure you want to log out?",[{
+                text:"Yes",
+                onPress:()=>{this.props.navigation.navigate("LoginScreen")},
+                style:'default'
+              },{
+                text: "No",
+                onPress:()=>{},
+                style: 'cancel'
+              }])
+              
+            }}>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <Ionicons name="exit-outline" size={20} />
               <Text
@@ -208,14 +220,6 @@ const DrawerNavigator=()=>{
         },
       }}
     >
-      <Drawer.Screen
-        name="Login"
-        component={LoginScreen}
-        options={{
-          drawerIcon: ({ color }) => (
-            <Ionicons name="man-outline" size={20} color={color} />
-          ),
-        }}/>
 
       <Drawer.Screen
         name="Profile"
@@ -268,12 +272,13 @@ export default class App extends Component {
   render () {
     return (
       <NavigationContainer>
-        <Stack.Navigator>
+        <Stack.Navigator initialRouteName='LoginScreen'>
           <Stack.Screen name="LoginScreen" component={LoginScreen} options={{headerShown:false}}/>
+          <Stack.Screen name="SignupScreen" component={SignupScreen} options={{headerShown:false}}/>
 
           <Stack.Screen name='ProfileScreen' component={DrawerNavigator}/>
           <Stack.Screen name='AboutScreen' component={DrawerNavigator}/>
-          <Stack.Screen name='HomeScreen' component={DrawerNavigator}/>
+          <Stack.Screen name='HomeScreen' component={DrawerNavigator} options={{headerShown:false}}/>
           <Stack.Screen name='BookingScreen' component={DrawerNavigator}/>
           <Stack.Screen name='OthersScreen' component={DrawerNavigator}/>
         </Stack.Navigator>
