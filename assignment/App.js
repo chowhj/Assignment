@@ -9,7 +9,7 @@ import {
   Alert,
   SafeAreaView,
   ImageBackground,
-  TouchableNativeFeedbackBase,
+  TouchableWithoutFeedback,
   TouchableNativeFeedback,
   TouchableOpacity,
   TouchableHighlight,
@@ -19,25 +19,35 @@ import {
   DrawerContentScrollView,
   DrawerItemList,
 } from '@react-navigation/drawer';
+import { ViewPropTypes } from 'deprecated-react-native-prop-types';
+import 'react-native-gesture-handler'
+import PropTypes from 'prop-types'
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/AntDesign';
+
 import AboutScreen from './wireless_task/screens/AboutScreen';
 import HomeScreen from './wireless_task/screens/HomeScreen';
 import BookingScreen from './wireless_task/screens/BookingScreen';
 import ProfileScreen from './wireless_task/screens/ProfileScreen';
 import SettingsScreen from './wireless_task/screens/SettingsScreen';
 import SignoutScreen from './wireless_task/screens/SignoutScreen';
+import LoginScreen from './wireless_task/screens/LoginScreen';
+import SignupScreen from './wireless_task/screens/SignupScreen';
+
 import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer, StackActions} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import {LogBox} from 'react-native';
-import LoginScreen from './wireless_task/screens/LoginScreen';
-import SignupScreen from './wireless_task/screens/SignupScreen';
 LogBox.ignoreLogs (['EventEmitter.removeListener']);
 
+
+//const Tab = createBottomTabNavigator ();
+const Tab = createMaterialBottomTabNavigator();
 const Stack = createStackNavigator();
-const Tab = createBottomTabNavigator ();
 
 class MyDrawerComponent extends Component {
+  
   render () {
     return (
       <View style={{flex: 1}}>
@@ -163,34 +173,43 @@ class MyDrawerComponent extends Component {
 
 function MyTab () {
   return (
-       <Tab.Navigator initialRouteName={'Setings'}
-          screenOptions={{
-            tabBarActiveTintColor:'#800080',
-            tabBarActiveBackgroundColor:'#ADD8E6',
-            tabBarLabelStyle:{
-              fontSize:22,
-            },
-            tabBarStyle:{
-              backgroundColor:'silver',
-              borderRadius:50
-            },
-          }}
-        >
+       <Tab.Navigator 
+        initialRouteName={'Settings'}
+        barStyle={{ backgroundColor: '#E6E6FA' ,padding: 0 }}
+        activeColor='#0000A5'
+        inactiveColor='grey'
+        shifting='true'
+         >
+
           <Tab.Screen
             name="Settings"
             component={SettingsScreen}
             options={{
+              tabBarLabel: 'Settings',
               tabBarIcon: () => {
-                return <Ionicons name="settings-outline" size={20} color={'blue'} />;
+                return <Ionicons name="settings-outline" size={26} color={'#940073'} />
+                ;
               },
             }}
           />
+ 
           <Tab.Screen
             name="Signout"
             component={SignoutScreen}
             options={{
+              tabBarLabel:'Sign Out',
               tabBarIcon: () => {
-                return <Ionicons name="exit-outline" size={20} color={'blue'} />;
+                return <Ionicons name="exit-outline" size={26} color={'#940073'} />;
+              },
+            }}
+          />
+          <Tab.Screen
+            name="Login"
+            component={LoginScreen}
+            options={{
+              tabBarLabel:'Login',
+              tabBarIcon: () => {
+                return <Ionicons name="enter-outline" size={26} color={'#940073'} />;
               },
             }}
           />
@@ -200,70 +219,91 @@ function MyTab () {
 
 const DrawerNavigator=()=>{
   const Drawer = createDrawerNavigator ()
-  return(
-    <Drawer.Navigator initialRouteName={'Home'}
-      drawerContent={props => <MyDrawerComponent {...props} />}
-      screenOptions={{
-        drawerActiveTintColor: 'darkslateblue',
-        drawerActiveBackgroundColor: 'skyblue',
-        drawerLabelStyle: {
-          marginLeft: -24,
-          fontFamily: 'EduQLDBeginner-Regular',
-        },
-        headerStyle: {
-          backgroundColor: '#00008B',
-        },
-        headerTitleAlign: 'center',
-        headerTintColor: '#fff',
-        headerTitleStyle: {
-          fontWeight: 'bold',
-        },
-      }}
-    >
-
-      <Drawer.Screen
-        name="Profile"
-        component={ProfileScreen}
-        options={{
-          drawerIcon: ({ color }) => (
-            <Ionicons name="man-outline" size={20} color={color} />
-          ),
-        }}/>
-      
-      <Drawer.Screen
-        name="About"
-        component={AboutScreen}
-        options={{
-          drawerIcon: ({ color }) => (
-            <Ionicons name="information-outline" size={20} color={color} />
-          ),
+    return(
+        <Drawer.Navigator initialRouteName={'Home'}
+          drawerContent={props => <MyDrawerComponent {...props} />}
+          screenOptions={{
+            drawerActiveTintColor: 'darkslateblue',
+            drawerActiveBackgroundColor: 'skyblue',
+            drawerLabelStyle: {
+              marginLeft: -24,
+              fontFamily: 'EduQLDBeginner-Regular',
+            },
+            headerStyle: {
+              backgroundColor: '#00008B',
+            },
+            headerTitleAlign: 'center',
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+           // headerRight: () => (
+              //<TouchableWithoutFeedback
+                  //onPress={() => this.props.navigation.navigate('Home')}>
+                  //</NavigationContainer><Ionicons name="arrow-back" size={25} color="#00FFFF" />
+              //</TouchableWithoutFeedback>
+            //)
+          }}
+        >
+        <Drawer.Screen
+            name="Home"
+            component={HomeScreen}
+            options={{
+              drawerIcon: ({ color }) => (
+                <Ionicons name="home-outline" size={20} color={color} />
+              ),
         }} />
 
-      <Drawer.Screen
-        name="Home"
-        component={HomeScreen}
-        options={{
-          drawerIcon: ({ color }) => (
-            <Ionicons name="home-outline" size={20} color={color} />
-          ),
+        <Drawer.Screen
+            name="Profile"
+            component={ProfileScreen}
+            options={{
+                drawerIcon: ({ color }) => (
+                <Icon name="user" size={20} color={color} />
+                ),
+        }}/>
+        <Drawer.Screen
+            name="About"
+            component={AboutScreen}
+            options={{
+              drawerIcon: ({ color }) => (
+                <Ionicons name="information-outline" size={20} color={color} />
+              ),
         }} />
 
-      <Drawer.Screen
-        name="Booking"
-        component={BookingScreen}
-        options={{
-          drawerIcon: ({ color }) => (
-            <Ionicons name="book-outline" size={20} color={color} />
-          ),
+        <Drawer.Screen
+            name="Booking"
+            component={BookingScreen}
+            options={{
+                drawerIcon: ({ color }) => (
+                <Ionicons name="book-outline" size={20} color={color} />
+                ),
         }}/>
 
-      <Drawer.Screen
-        name="Others"
-        component={MyTab}
-        options={{
-          drawerIcon: ({ color }) => (
-            <Ionicons name="add-outline" size={20} color={color} />
-          ),
+        <Drawer.Screen
+            name="More"
+            component={MyTab}
+            options={{
+                drawerIcon: ({ color }) => (
+                <Ionicons name="add-outline" size={20} color={color} />
+                ),
+        }} />
+
+        <Drawer.Screen
+            name="Settings"
+            component={SettingsScreen}
+            options={{
+                drawerLabel: () => null,
+                drawerIcon: () => null,
+        }} />
+
+        <Drawer.Screen
+            name="Signout"
+            component={SignoutScreen}
+            options={{
+                drawerLabel: () => null,
+                drawerIcon: () => null,
+                
         }} />
     </Drawer.Navigator>
   )
@@ -282,7 +322,6 @@ export default class App extends Component {
           <Stack.Screen name='BookingScreen' component={DrawerNavigator}/>
           <Stack.Screen name='OthersScreen' component={DrawerNavigator}/>
         </Stack.Navigator>
-      
       </NavigationContainer>
     );
   }
@@ -294,7 +333,7 @@ const styles = StyleSheet.create ({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    backgroundColor: '#F0FFFF',
   },
   title: {
     fontSize: 20,
