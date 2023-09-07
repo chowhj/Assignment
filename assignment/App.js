@@ -30,9 +30,10 @@ import {NavigationContainer, StackActions} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {LogBox} from 'react-native';
+import LoginScreen from './wireless_task/screens/LoginScreen';
 LogBox.ignoreLogs (['EventEmitter.removeListener']);
 
-const Drawer = createDrawerNavigator ();
+const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator ();
 
 class MyDrawerComponent extends Component {
@@ -185,75 +186,98 @@ function MyTab () {
   )
 }
 
+const DrawerNavigator=()=>{
+  const Drawer = createDrawerNavigator ()
+  return(
+    <Drawer.Navigator initialRouteName={'Home'}
+      drawerContent={props => <MyDrawerComponent {...props} />}
+      screenOptions={{
+        drawerActiveTintColor: 'darkslateblue',
+        drawerActiveBackgroundColor: 'skyblue',
+        drawerLabelStyle: {
+          marginLeft: -24,
+          fontFamily: 'EduQLDBeginner-Regular',
+        },
+        headerStyle: {
+          backgroundColor: '#00008B',
+        },
+        headerTitleAlign: 'center',
+        headerTintColor: '#fff',
+        headerTitleStyle: {
+          fontWeight: 'bold',
+        },
+      }}
+    >
+      <Drawer.Screen
+        name="Login"
+        component={LoginScreen}
+        options={{
+          drawerIcon: ({ color }) => (
+            <Ionicons name="man-outline" size={20} color={color} />
+          ),
+        }}/>
+
+      <Drawer.Screen
+        name="Profile"
+        component={ProfileScreen}
+        options={{
+          drawerIcon: ({ color }) => (
+            <Ionicons name="man-outline" size={20} color={color} />
+          ),
+        }}/>
+      
+      <Drawer.Screen
+        name="About"
+        component={AboutScreen}
+        options={{
+          drawerIcon: ({ color }) => (
+            <Ionicons name="information-outline" size={20} color={color} />
+          ),
+        }} />
+
+      <Drawer.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{
+          drawerIcon: ({ color }) => (
+            <Ionicons name="home-outline" size={20} color={color} />
+          ),
+        }} />
+
+      <Drawer.Screen
+        name="Booking"
+        component={BookingScreen}
+        options={{
+          drawerIcon: ({ color }) => (
+            <Ionicons name="book-outline" size={20} color={color} />
+          ),
+        }}/>
+
+      <Drawer.Screen
+        name="Others"
+        component={MyTab}
+        options={{
+          drawerIcon: ({ color }) => (
+            <Ionicons name="add-outline" size={20} color={color} />
+          ),
+        }} />
+    </Drawer.Navigator>
+  )
+}
 export default class App extends Component {
   render () {
     return (
       <NavigationContainer>
-      <Drawer.Navigator initialRouteName={'Home'}
-          drawerContent={props => <MyDrawerComponent {...props} />}
-          screenOptions={{
-            drawerActiveTintColor: 'darkslateblue',
-            drawerActiveBackgroundColor: 'skyblue',
-            drawerLabelStyle: {
-              marginLeft: -24,
-              fontFamily: 'EduQLDBeginner-Regular',
-            },
-            headerStyle: {
-              backgroundColor: '#00008B',
-            },
-            headerTitleAlign: 'center',
-            headerTintColor: '#fff',
-            headerTitleStyle: {
-              fontWeight: 'bold',
-            },
-          }}
-        >
-          <Drawer.Screen
-            name="Profile"
-            component={ProfileScreen}
-            options={{
-              drawerIcon: ({ color }) => (
-                <Ionicons name="man-outline" size={20} color={color} />
-              ),
-            }}/>
-          
-          <Drawer.Screen
-            name="About"
-            component={AboutScreen}
-            options={{
-              drawerIcon: ({ color }) => (
-                <Ionicons name="information-outline" size={20} color={color} />
-              ),
-            }} />
+        <Stack.Navigator>
+          <Stack.Screen name="LoginScreen" component={LoginScreen} options={{headerShown:false}}/>
 
-          <Drawer.Screen
-            name="Home"
-            component={HomeScreen}
-            options={{
-              drawerIcon: ({ color }) => (
-                <Ionicons name="home-outline" size={20} color={color} />
-              ),
-            }} />
-
-          <Drawer.Screen
-            name="Booking"
-            component={BookingScreen}
-            options={{
-              drawerIcon: ({ color }) => (
-                <Ionicons name="book-outline" size={20} color={color} />
-              ),
-            }}/>
-
-          <Drawer.Screen
-            name="Others"
-            component={MyTab}
-            options={{
-              drawerIcon: ({ color }) => (
-                <Ionicons name="add-outline" size={20} color={color} />
-              ),
-            }} />
-
-        </Drawer.Navigator>
+          <Stack.Screen name='ProfileScreen' component={DrawerNavigator}/>
+          <Stack.Screen name='AboutScreen' component={DrawerNavigator}/>
+          <Stack.Screen name='HomeScreen' component={DrawerNavigator}/>
+          <Stack.Screen name='BookingScreen' component={DrawerNavigator}/>
+          <Stack.Screen name='OthersScreen' component={DrawerNavigator}/>
+        </Stack.Navigator>
+      
       </NavigationContainer>
     );
   }
