@@ -150,6 +150,7 @@ class MyDrawerComponent extends Component {
                 onPress:()=>{},
                 style: 'cancel'
               }])
+              
             }}>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <Ionicons name="exit-outline" size={20} />
@@ -240,34 +241,32 @@ const DrawerNavigator=()=>{
           ),
         }} />
 
+          <Drawer.Screen
+            name="Profile"
+            component={ProfileScreen}
+            options={{
+              drawerIcon: ({ color }) => (
+                <Icon name="user" size={20} color={color} />
+              ),
+            }}/>
+          
+          <Drawer.Screen
+            name="About"
+            component={AboutScreen}
+            options={{
+              drawerIcon: ({ color }) => (
+                <Ionicons name="information-outline" size={20} color={color} />
+              ),
+            }} />
 
-      <Drawer.Screen
-        name="About Us"
-        component={AboutScreen}
-        options={{
-          drawerIcon: ({ color }) => (
-            <Ionicons name="information-outline" size={20} color={color} />
-          ),
-        }} 
-        />
-
-      <Drawer.Screen
-        name="Profile"
-        component={ProfileScreen}
-        options={{
-          drawerIcon: ({ color }) => (
-            <Icon name="user-circle" size={20} color={color} />
-          ),
-        }}/>
-
-      <Drawer.Screen
-        name="Booking Page"
-        component={BookingScreen}
-        options={{
-          drawerIcon: ({ color }) => (
-            <Ionicons name="book-outline" size={20} color={color} />
-          ),
-        }}/>
+          <Drawer.Screen
+            name="Booking"
+            component={BookingScreen}
+            options={{
+              drawerIcon: ({ color }) => (
+                <Ionicons name="book-outline" size={20} color={color} />
+              ),
+              }}/>
 
       <Drawer.Screen
         name="More"
