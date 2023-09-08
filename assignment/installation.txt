@@ -1,0 +1,13 @@
+npm install @react-navigation/native
+npm install react-native-reanimated react-native-gesture-handler@2.8.0 react-native-screens react-native-safe-area-context @react-native-community/masked-view
+npm install @react-navigation/stack
+npm install @react-navigation/bottom-tabs
+npm install react-native-vector-icons --save
+npm install @react-navigation/drawer
+npm i @react-native-picker/picker --save
+npm i @react-native-community/slider --force
+npm i react-native-pager-view
+npm install --save react-native-sqlite-storage
+npm i @react-native-async-storage/async-storage
+npm i fbjs
+npm i react-native-snap-carousel
