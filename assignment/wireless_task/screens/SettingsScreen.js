@@ -28,6 +28,8 @@ export default class SettingsScreen extends Component{
         showNotification: false,
         language: 'EN',
         rpromo: 'false',
+        name:this.props.route.params?.username,
+        signedin:this.props.route.params?.signedin,
       };
     }
   
@@ -72,23 +74,23 @@ export default class SettingsScreen extends Component{
     render() {
       return (
         <ScrollView style={styles.container}>
-          <TouchableOpacity onPress = {() => this.props.navigation.navigate('Profile')}>
+           <TouchableOpacity onPress = {() => this.props.navigation.navigate('HomeScreen',{screen:'Home Page'})}>
                 <View style = {styles.aboutbutton}>
-                    <Text style={{fontWeight:'bold',flex: 4,fontSize: 20,margin: 10,}}>Account 
-                        <Icon name="user" size={28} color={'4863A0'} />
+                    <Text style={{fontWeight:'bold',flex: 4,fontSize: 20,margin: 10,}}>Home Page{'\t'} 
+                        <Ionicons name="home" size={28} color={'#4863A0'} />
                     </Text>
                 </View>
           </TouchableOpacity>
-          <TouchableOpacity onPress = {() => this.props.navigation.navigate('About')}>
+          <TouchableOpacity onPress = {() => this.props.navigation.navigate('AboutScreen',{screen:'About'})}>
                 <View style = {styles.aboutbutton}>
-                    <Text style={{fontWeight:'bold',flex: 4,fontSize: 20,margin: 10,}}>About  
-                        <Icon name="infocirlceo" size={28} color={'4863A0'} />
+                    <Text style={{fontWeight:'bold',flex: 4,fontSize: 20,margin: 10,}}>About US {'\t'} 
+                        <Icon name="infocirlceo" size={28} color={'#4863A0'} />
                     </Text>
                 </View>
           </TouchableOpacity>
           <View style={styles.switchContainer}>
             <Text style={styles.switchLabel}>{'Play Sound  '}
-                 <Icon name="sound" size={28} color={'4863A0'} /></Text>
+                 <Icon name="sound" size={28} color={'#4863A0'} /></Text>
             <Switch
               style={styles.switch}
               onValueChange={playSound => {
@@ -100,7 +102,7 @@ export default class SettingsScreen extends Component{
           </View>
           <View style={styles.switchContainer}>
             <Text style={styles.switchLabel}>{'Show Notification  '}
-                <Icon name="notification" size={28} color={'4863A0'} /></Text>
+                <Icon name="notification" size={28} color={'#4863A0'} /></Text>
             <Switch
               style={styles.switch}
               onValueChange={showNotification => {
@@ -115,7 +117,7 @@ export default class SettingsScreen extends Component{
           </View>
           <View style={styles.switchContainer}>
             <Text style={styles.switchLabel}>{'Received promotion  '}
-                <Ionicons name="newspaper-outline" size={28} color={'4863A0'} /></Text>
+                <Ionicons name="newspaper-outline" size={28} color={'#4863A0'} /></Text>
             <Switch
               style={styles.switch}
               onValueChange={rpromo => {

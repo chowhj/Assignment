@@ -19,33 +19,19 @@
     "@react-navigation/material-bottom-tabs": "^6.2.16",
     "@react-navigation/native": "^6.1.7",
     "@react-navigation/stack": "^6.3.17",
-<<<<<<< HEAD
     "@types/react-native-snap-carousel": "^3.8.5",
     "deprecated-react-native-prop-types": "^4.2.1",
-=======
-    "fbjs": "^3.0.5",
->>>>>>> 7ac128a12f7e266cb7d72d4886e54a041d316e38
     "react": "18.2.0",
     "react-base": "^0.2.0",
     "react-native": "0.72.3",
-<<<<<<< HEAD
     "react-native-flatlist-slider": "^1.0.6",
+    "react-native-floating-action": "^1.22.0",
     "react-native-gesture-handler": "^2.12.1",
     "react-native-pager-view": "^6.2.0",
     "react-native-reanimated": "^3.4.2",
     "react-native-safe-area-context": "^4.7.1",
     "react-native-screens": "^3.24.0",
-    "react-native-snap-carousel": "^4.0.0-beta.6",
-=======
-    "react-native-gesture-handler": "^2.8.0",
-    "react-native-pager-view": "^6.2.1",
-    "react-native-reanimated": "^3.4.2",
-
-    "react-native-safe-area-context": "^4.7.2",
-    "react-native-screens": "^3.25.0",
-
-    "react-native-snap-carousel": "^3.9.1",
->>>>>>> 7ac128a12f7e266cb7d72d4886e54a041d316e38
+    "react-native-snap-carousel": "^1.3.1",
     "react-native-sqlite-storage": "^6.0.1",
     "react-native-vector-icons": "^10.0.0"
   },
@@ -57,6 +43,7 @@
     "@react-native/metro-config": "^0.72.9",
     "@tsconfig/react-native": "^3.0.0",
     "@types/react": "^18.0.24",
+    "@types/react-native-sqlite-storage": "^6.0.0",
     "@types/react-test-renderer": "^18.0.0",
     "babel-jest": "^29.2.1",
     "eslint": "^8.19.0",

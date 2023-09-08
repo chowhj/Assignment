@@ -1,7 +1,6 @@
 import React, {Component,useRef, useState, useEffect} from "react";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import Carousel, {ParallaxImage} from 'react-native-snap-carousel';
 import {
   Text,
   View,
@@ -120,12 +119,12 @@ export default class AboutScreen extends Component{
             <SafeAreaView style={styles.container}>
                 <View style={styles.welcome}>
                 <TouchableWithoutFeedback
-                   onPress={() => {this.props.navigation.navigate('Home');
+                   onPress={() => {this.props.navigation.navigate('HomeScreen',{screen:'Home Page'});
                    }}
                 >
                   <View style ={styles.touch} flexDirection="row">
-                    <Ionicons name="arrow-back" size={25} color={'#1AA260'} />
-                    <Text style = {{color:'#045D5D'}}>Back To Home Screen</Text>
+                    <Ionicons name="arrow-back" size={25} color={'#93FFE8'} />
+                    <Text style = {{color:'#F0FFFF',fontWeight:'bold',fontSize:18}}>Home Screen</Text>
                   </View>
                 </TouchableWithoutFeedback>
                   <ScrollView persistentScrollbar={true} >
@@ -304,7 +303,9 @@ const styles = StyleSheet.create({
     touch: {
       alignItems: 'flex-start',
       justifyContent: 'flex-start',
-      backgroundColor: '#C3FDB8',
-      borderRadius: 7,
+      backgroundColor: '#00BFFF',
+      borderRadius: 10,
+      width:140,
+      
   },
 });
