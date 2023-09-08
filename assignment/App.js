@@ -254,6 +254,7 @@ const DrawerNavigator=()=>{
               ),
         }} />
 
+
         <Drawer.Screen
             name="Profile"
             component={ProfileScreen}
