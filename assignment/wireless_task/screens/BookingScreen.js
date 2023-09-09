@@ -13,3 +13,9 @@ export default class BookingScreen extends Component{
         )
     }
 }
+
+BookingScreen.navigationOptions = (navData) => {
+    return {
+      headerTitle: "Home Page",
+    };
+  };

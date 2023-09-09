@@ -57,12 +57,22 @@ export default class LoginScreen extends Component{
                         signedin: true
                     });
                     console.log(this.state.username, " login success");
+                    this.props.navigation.navigate("ProfileScreen",{
+                        screen: 'Profile',
+                        params:{
+                        username: this.state.username,
+                        signedin: this.state.signedin,
+                        resetData: this.resetData
+                        }
+                    })
                     this.props.navigation.navigate("HomeScreen",{
+                        screen: 'Home Page',
+                        params:{
                         username: this.state.username,
                         email: this.state.email,
                         signedin: this.state.signedin,
                         resetData: this.resetData
-                    })
+                    }})
                 }else{
                     console.log("login failed");
                     this.setState({
