@@ -135,7 +135,7 @@ export default class AboutScreen extends Component{
                     <Text style={styles.about}>SuperVilla Star Resort is a hotel chain of the Mauritian brand that offers 
                     5 hotels perfect for those looking for a unique and unforgettable stay in Mauritius. SuperVilla Star Resort is 
                     specialized in boutique hotel accommodation and services in Mauritius.
-                    Started in 2015 with one hotel namely Superstar Villa Hotel of 59 rooms in the north of the island.
+                    Started in 2015 with one hotel namely Superstar Villa Hotel of 30 rooms in the north of the island.
                     Today the group has reached an inventory 
                     of 216 keys daily altogether and our customers are sourced from European countries, 
                     Asian, Africa and Reunion Island. The hotels are marketed from 4 to 5 stars categories, and each hotel targets specific segments 
