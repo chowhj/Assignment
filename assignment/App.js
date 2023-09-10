@@ -57,7 +57,7 @@ class MyDrawerComponent extends Component {
           contentContainerStyle={{backgroundColor: 'skyblue'}}
         >
           <ImageBackground
-            source={require ('./wireless_task/img/icon.jpeg')}
+            source={require ('./wireless_task/img/hotelicon.jpeg')}
             style={{padding: 10}}
           >
             <Image
@@ -254,6 +254,7 @@ const DrawerNavigator=()=>{
                 <Ionicons name="home-outline" size={20} color={color} />
               ),
         }} />
+
 
         <Drawer.Screen
             name="Profile"

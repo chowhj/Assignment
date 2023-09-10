@@ -2,26 +2,36 @@ import React, {Component} from "react";
 import {Text,View,ScrollView,Image,StyleSheet,TouchableHighlight} from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
 
-const Stack = createStackNavigator();
+import Icon from 'react-native-vector-icons/FontAwesome';
+import Iconfont from 'react-native-vector-icons/Fontisto';
+
 
 export default class HomeScreen extends Component{
+
+  constructor(props) {
+    super(props);
+    this.state = {
+        name:this.props.route.params?.username,
+        email:this.props.route.params?.email,
+        signedin:this.props.route.params?.signedin,
+      };
+    }
+
     render(){
         return(
             <View style={styles.container}>
               <View style ={styles.welcome}>
                 <ScrollView>
                   <Text style ={styles.welcomeText}>
-                      Welcome To Superstar Villa Resort
-                      <Ionicons
-                        name="home-outline"
-                        size={35}
+                      Welcome To Superstar Villa Resort {'\t'}{'\t'}    
+                      <Iconfont
+                        name="hotel"
+                        size={30}
                         color={'#6A287E'} 
                       />
                   </Text>
-                  <Text style={{fontSize:22,color:'#483D8B'}}>Hotel Room View</Text>
+                  <Text style={{fontSize:22,color:'#483D8B'}}>Hotel Room View </Text>
                   <ScrollView horizontal={true}>
                   <Image source={require('../img/homescreen/hotelhome1.jpeg')} style={{width: 120, height: 120, margin: 10}} />
                   <Image source={require('../img/homescreen/hotelhome2.jpeg')} style={{width: 120, height: 120, margin: 10}} />
