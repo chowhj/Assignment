@@ -2,7 +2,10 @@ import React, {Component} from "react";
 import {Text,View,ScrollView,Image,StyleSheet,TouchableHighlight} from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
 
+const Stack = createStackNavigator();
 
 export default class HomeScreen extends Component{
     render(){
@@ -31,7 +34,7 @@ export default class HomeScreen extends Component{
                   <TouchableOpacity onPress = {() => this.props.navigation.navigate('About')}>
                     <View style = {styles.aboutbutton}>
                       <Text style={styles.introtext}>Superstar Villa Hotel Resort, Seasense is, 
-                          a beachfront property, consisting of 59 rooms on 2 levels (Ground & 1st floor). 
+                          a beachfront property, consisting of 30 rooms on 2 levels (Ground & 1st floor). 
                           The hotel boasts 3 Restaurants, 2 Bars, a Lounge, Reception, Boathouse and Spa.</Text>
                     </View>
                   </TouchableOpacity>
@@ -123,3 +126,4 @@ const styles = StyleSheet.create({
     backgroundColor: '#ADDFFF'
   },
 });
+
