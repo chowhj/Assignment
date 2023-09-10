@@ -24,10 +24,11 @@ import 'react-native-gesture-handler'
 import PropTypes from 'prop-types'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Icon from 'react-native-vector-icons/AntDesign';
-
+import io from 'socket.io-client';
 import AboutScreen from './wireless_task/screens/AboutScreen';
 import HomeScreen from './wireless_task/screens/HomeScreen';
 import BookingScreen from './wireless_task/screens/BookingScreen';
+import ConfirmScreen from './wireless_task/screens/ConfirmScreen';
 import ProfileScreen from './wireless_task/screens/ProfileScreen';
 import SettingsScreen from './wireless_task/screens/SettingsScreen';
 import SignoutScreen from './wireless_task/screens/SignoutScreen';
@@ -321,6 +322,7 @@ export default class App extends Component {
           <Stack.Screen name='AboutScreen' component={DrawerNavigator}/>
           <Stack.Screen name='HomeScreen' component={DrawerNavigator} options={{headerShown:false}}/>
           <Stack.Screen name='BookingScreen' component={DrawerNavigator}/>
+          <Stack.Screen name='ConfirmScreen'component={ConfirmScreen} options={{ headerShown: true, title: 'Confirm Reservation' }}/>
           <Stack.Screen name='OthersScreen' component={DrawerNavigator}/>
         </Stack.Navigator>
       </NavigationContainer>
