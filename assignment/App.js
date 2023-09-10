@@ -217,7 +217,7 @@ function MyTab () {
   )
 }
 
-const DrawerNavigator=()=>{
+const DrawerNavigator=({route})=>{
   const Drawer = createDrawerNavigator ()
     return(
         <Drawer.Navigator initialRouteName={'Home'}
@@ -248,6 +248,7 @@ const DrawerNavigator=()=>{
         <Drawer.Screen
             name="Home"
             component={HomeScreen}
+            initialParams={route.params}
             options={{
               drawerIcon: ({ color }) => (
                 <Ionicons name="home-outline" size={20} color={color} />
@@ -258,6 +259,7 @@ const DrawerNavigator=()=>{
         <Drawer.Screen
             name="Profile"
             component={ProfileScreen}
+            initialParams={route.params}
             options={{
                 drawerIcon: ({ color }) => (
                 <Icon name="user" size={20} color={color} />
@@ -317,11 +319,8 @@ export default class App extends Component {
           <Stack.Screen name="LoginScreen" component={LoginScreen} options={{headerShown:false}}/>
           <Stack.Screen name="SignupScreen" component={SignupScreen} options={{headerShown:false}}/>
 
-          <Stack.Screen name='ProfileScreen' component={DrawerNavigator}/>
-          <Stack.Screen name='AboutScreen' component={DrawerNavigator}/>
-          <Stack.Screen name='HomeScreen' component={DrawerNavigator} options={{headerShown:false}}/>
-          <Stack.Screen name='BookingScreen' component={DrawerNavigator}/>
-          <Stack.Screen name='OthersScreen' component={DrawerNavigator}/>
+          <Stack.Screen name='Drawer' component={DrawerNavigator} options={{headerShown:false}}/>
+
         </Stack.Navigator>
       </NavigationContainer>
     );
