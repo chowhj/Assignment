@@ -7,8 +7,7 @@ import {
     Alert} from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 let SQLite = require('react-native-sqlite-storage');
-
-var flag = false;
+let config = require('../Config')
 
 export default class SignupScreen extends Component{
     constructor(props){
@@ -21,13 +20,6 @@ export default class SignupScreen extends Component{
             confirm:false,
             tempData:"",
         }
-        this.db = SQLite.openDatabase({
-            name:"credentialsdb.db",
-            createFromLocation: "~credentialsdb.db"
-        },
-        this.openCallBack(),
-        this.errorCallBack()
-        )
     }
     componentDidMount(){
         this.setState({
@@ -38,13 +30,6 @@ export default class SignupScreen extends Component{
             confirm:false,
             tempData:"",
         });
-    }
-    openCallBack(){
-        console.log("Successfully open the database")
-    }
-    
-    errorCallBack(err){
-        console.log("Error " + err)
     }
 
     emailTestOK(email){
@@ -76,27 +61,49 @@ export default class SignupScreen extends Component{
     }
 
     _insertDB(){
-        this.db.transaction(tx=>{
-            tx.executeSql("INSERT INTO users(username,password,email,phone,createDate) VALUES (?,?,?,?,?)",[
-                this.state.username,
-                this.state.password,
-                this.state.email,
-                this.state.phoneNumber,
-                new Date()
-            ])
-        });
-        Alert.alert("Success","You have signed up successfully. Please use the username and email to login",[{
-            text: "OK",
-            onPress:()=>{
-                this.props.route.params.resetData()
-                this.props.navigation.goBack();
+        let url = config.settings.serverPath + "/api/users";
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                username: this.state.username,
+                password: this.state.password,
+                email: this.state.email,
+                phone: this.state.phoneNumber,
+                createDate: new Date()
+            })
+        }).then(response =>{
+            if (!response.ok){
+                this.sendAlert("Error", response.status.toString());
+                throw Error('Error' + response.status)
             }
-        }])
+            return response.json();
+        }).then(responseJSON=> {
+            if (responseJSON.affected > 0){
+                Alert.alert("Success","You have signed up successfully. Please use the username and email to login");
+            }else{
+                Alert.alert('Error saving record')
+            }
+            this.props.route.params.resetData();
+            this.props.navigation.goBack();
+        }).catch(error => {console.log(error)})
     }
+
     validation(){
-        this.db.executeSql("SELECT * FROM users WHERE email=?",[this.state.email],results=>{
-            if (results.rows.length == 1){
-                this.sendAlert("Warning","This email has been signed up");
+        let url = config.settings.serverPath + '/api/users/' + this.state.email
+        fetch(url)
+        .then(response=> {
+            if (!response.ok){
+                Alert.alert('Error', response.status.toString());
+                throw Error('Error ' + response.status)
+            }
+            return response.json();
+        }).then(user => {
+            if (user){
+                this.sendAlert("Warning","This.email has been signed up");
             }else if (!this.state.username || !this.state.password || !this.state.email || !this.state.phoneNumber){
                 this.sendAlert("Warning","Please fill up all fields")
             }else if (!this.testingOK(this.state.username, "Username")){
@@ -106,7 +113,7 @@ export default class SignupScreen extends Component{
             }else if (!this.emailTestOK(this.state.email)){
                 this.sendAlert("Warning","Please enter a valid email address")
             }else{this.setState({confirm:true})}
-        })
+        }).catch(error => console.log(error))
     }
 
     sendAlert(title, alertMsg){
@@ -136,6 +143,7 @@ export default class SignupScreen extends Component{
                 <Text style={{fontSize:20,marginTop:30,color:"red"}}>Re-enter your password to confirm</Text>
                 <View style={styles.inputView}>
                     <TextInput style={styles.inputStyle}
+                        ref = {input => {this.reenterpw = input}}
                         placeholder='Re-enter password'
                         placeholderTextColor="#003f5c"
                         secureTextEntry={true}
@@ -145,7 +153,10 @@ export default class SignupScreen extends Component{
                 <View style={{marginTop:15,flexDierction:'row'}}>
                     <TouchableOpacity style={[styles.confirmBtn,{backgroundColor:"skyblue"}]} onPress={()=>{
                         if (this.state.tempData == this.state.password){this._insertDB()}
-                        else{this.sendAlert("Warning","Password is not the same")}
+                        else{
+                            this.sendAlert("Warning","Password is not the same")
+                            this.reenterpw.clear()
+                        }
                     }}>
                         <Text style={[styles.ButtonText, {color:"blue"}]}>Confirm</Text>
                     </TouchableOpacity>
@@ -160,12 +171,12 @@ export default class SignupScreen extends Component{
     }
     inputRender(){
         return(
-            <View style={styles.container}>
-                <Text style={styles.textTitle}>Sign Up Page</Text>
+            <View style={[styles.container,{margin: 10, borderRadius:10, borderWidth:8, borderColor:"#6B44B6" ,backgroundColor:"#44D7BF"}]}>
+                <Text style={styles.textTitle}>Sign Up</Text>
                 <View style={styles.inputView}>
                     <TextInput style={styles.inputStyle}
                         placeholder="Username"
-                        placeholderTextColor="#003f5c"
+                        placeholderTextColor="grey"
                         onChangeText={(username)=>this.setState({username:username})}
                         value={this.state.username}
                     />
@@ -173,7 +184,7 @@ export default class SignupScreen extends Component{
                 <View style={styles.inputView}>
                     <TextInput style={styles.inputStyle}
                         placeholder="Password"
-                        placeholderTextColor="#003f5c"
+                        placeholderTextColor="grey"
                         secureTextEntry={true}
                         onChangeText={(password)=>this.setState({password:password})}
                         value={this.state.password}
@@ -182,38 +193,41 @@ export default class SignupScreen extends Component{
                 <View style={styles.inputView}>
                     <TextInput style={styles.inputStyle}
                         placeholder="Email"
-                        placeholderTextColor="#003f5c"
+                        placeholderTextColor="grey"
                         onChangeText={(email)=>this.setState({email:email})}
                         value={this.state.email}
                     />  
                 </View>  
-                <View style={styles.inputView}>
-                    <TextInput style={styles.inputStyle}
+                <View style={[styles.inputView,{marginBottom:30}]}>
+                    <TextInput style={[styles.inputStyle]}
                         placeholder="Phone number"
-                        placeholderTextColor="#003f5c"
+                        placeholderTextColor="grey"
                         onChangeText={(phoneNumber)=>this.setState({phoneNumber:phoneNumber})}
                         value={this.state.phoneNumber}
                     />
-                </View>                  
-                <TouchableOpacity style={[styles.confirmBtn,{backgroundColor:'lime'}]}
+                </View>               
+                <View style={{flexDirection:'row',marginBottom: 15}}>
+                <TouchableOpacity style={[styles.confirmBtn,{backgroundColor:'#3DF72E',borderColor:'#1F7918',borderWidth:3}]}
                     onPress={()=>{
-                        this.validation();
+                        if (!this.state.email){this.sendAlert("Warning","Please fill up all fields")}
+                        else{this.validation()}
                     }}>
                     <Text style={[styles.ButtonText,{color:'blue'}]}>Confirm</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={[styles.confirmBtn,{backgroundColor:'red'}]}
+                <TouchableOpacity style={[styles.confirmBtn,{backgroundColor:'#F43333',borderColor:'#F9573D',borderWidth:3}]}
                     onPress={()=>{
                         this.props.route.params.resetData()
-                        this.props.navigation.goBack()}}>
-                    <Text style={[styles.ButtonText,{color:'yellow'}]}>Go Back</Text>
+                        this.props.navigation.popToTop()}}>
+                    <Text style={[styles.ButtonText,{color:'yellow'}]}>Cancel</Text>
                 </TouchableOpacity>
+                </View>
             </View>
         )
     }
 
     render(){
         return(
-            <View style={{flex:1, justifyContent:'center'}}>
+            <View style={{ flex:1, justifyContent:'center'}}>
                 {this.state.confirm? this.confirmationRender(): this.inputRender()}
             </View>
         )
@@ -234,7 +248,7 @@ const styles = StyleSheet.create({
         textAlign:'center',
     },
     inputView:{
-        backgroundColor: "#ffc0cb",
+        backgroundColor: "#B3FEE2",
         borderRadius:30,
         alignItems:'center',
         justifyContent:'center',
@@ -247,13 +261,12 @@ const styles = StyleSheet.create({
         width:130,
         height:45,
         justifyContent:'center',
-        margin: 5,
-        marginTop:20
+        margin:5
     },
     textTitle:{
-        fontSize:35,
+        fontSize:40,
         fontWeight:"800",
-        color:'blue',
+        color:'black',
         margin: 12
     },
     confirmView:{
