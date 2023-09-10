@@ -321,7 +321,8 @@ export default class App extends Component {
           <Stack.Screen name="SignupScreen" component={SignupScreen} options={{headerShown:false}}/>
 
           <Stack.Screen name='Drawer' component={DrawerNavigator} options={{headerShown:false}}/>
-
+          <Stack.Screen name='ConfirmScreen' component={ConfirmScreen} options={{ headerShown: true, title: 'Confirm Reservation' }} />
+          
         </Stack.Navigator>
       </NavigationContainer>
     );
