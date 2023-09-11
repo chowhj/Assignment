@@ -21,7 +21,7 @@ import PropTypes from 'prop-types'
 import { ViewPropTypes } from 'deprecated-react-native-prop-types';
 import ImageCarousel from '../../ImageCarousel';
 import Icon from 'react-native-vector-icons/FontAwesome';
-
+import { externalstyles } from "../style/Externalstylesheet";
 
 const restaurants = [
   {
@@ -116,10 +116,10 @@ const welness= [
 export default class AboutScreen extends Component{
     render(){
         return(
-            <SafeAreaView style={styles.container}>
+            <SafeAreaView style={externalstyles.container}>
                 <View style={styles.welcome}>
                 <TouchableWithoutFeedback
-                   onPress={() => {this.props.navigation.navigate('HomeScreen',{screen:'Home Page'});
+                   onPress={() => {this.props.navigation.navigate('Home');
                    }}
                 >
                   <View style ={styles.touch} flexDirection="row">
@@ -132,8 +132,8 @@ export default class AboutScreen extends Component{
                     Superstar Villa Hotel Resort
                       <Text> </Text>
                     ABOUT US</Text>
-                    <Text style={styles.about}>SuperVilla Star Resort is a hotel chain of the Mauritian brand that offers 
-                    5 hotels perfect for those looking for a unique and unforgettable stay in Mauritius. SuperVilla Star Resort is 
+                    <Text style={styles.about}>SuperVilla Star Resort is a hotel of the Mauritius Island that offers 
+                    5 type of rooms perfect for those looking for a unique and unforgettable stay in Mauritius. SuperVilla Star Resort is 
                     specialized in boutique hotel accommodation and services in Mauritius.
                     Started in 2015 with one hotel namely Superstar Villa Hotel of 30 rooms in the north of the island.
                     Today the group has reached an inventory 
@@ -219,16 +219,6 @@ export default class AboutScreen extends Component{
 
 
 const styles = StyleSheet.create({
-    container: {
-      flex:1,
-      backgroundColor: '#F0FFFF',
-      borderRadius: 4,
-      borderWidth: 0.5,
-      borderColor: '#d6d7da',
-      alignItems: 'center',
-      justifyContent:'flex-start',
-      padding:1,
-    },
     welcome: {
         alignItems: 'flex-start',
         justifyContent:'center',

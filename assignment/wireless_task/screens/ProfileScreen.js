@@ -1,114 +1,114 @@
-import React, {Component,useEffect} from "react";
+import React, {Component} from "react";
 import {
     Text,
     View,
     Image,
     StyleSheet,
-    TouchableHighlight,
+    TouchableWithoutFeedback,
     TouchableOpacity,
     SafeAreaView,
-    StatusBar,
+    Alert,
     Button,
     } from "react-native";
-
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import {InputWithLabel} from '../../UI';
-import {FloatingAction} from 'react-native-floating-action';
-import {ScrollView} from 'react-native-gesture-handler';
-import {FlatList} from 'react-native-gesture-handler';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
 import { LogBox } from 'react-native';
+import { externalstyles } from "../style/Externalstylesheet";
 
 LogBox.ignoreLogs([
   'Non-serializable values were found in the navigation state',
 ]);
 
 let SQLite = require('react-native-sqlite-storage');
-
-
+let config = require('../Config')
 
 export default class ProfileScreen extends Component{
   constructor(props) {
     super(props);
     this.state = {
-      name:this.props.route.params.params.username,
-      email:this.props.route.params.params.email,
-      signedin:this.props.route.params.params.signedin,
+      name: this.props.route.params.username,
+      email: this.props.route.params.email,
+      signedin: this.props.route.params.signedin,
       user: null,
       };
 
-    this.db = SQLite.openDatabase(
-      {name: 'credentialsdb.db', createFromLocation: '~credentialsdb.db'},
-      this.openCallback,
-      this.errorCallback,
-    );
-    console.log(this.props.route.params.params)
+    this._queryByEmail = this._queryByEmail.bind(this);
+
+    // this.db = SQLite.openDatabase(
+    //   {name: 'credentialsdb.db', createFromLocation: '~credentialsdb.db'},
+    //   this.openCallback,
+    //   this.errorCallback,
+    // );
     }
 
   componentDidMount() {
-    this._readSettings();
-    this._saveSettings(this.state.email)
     this._queryByEmail();
   }
 
   componentDidUpdate() {
-    this.props.navigation.setOptions({headerTitle: 'Profile  ' + this.state.name });
+    this.props.navigation.setOptions({headerTitle: 'Profile  ' + this.state.user.username});
   }
 
-  _queryByEmail() {
-    this.db.transaction(tx =>
-      tx.executeSql(
-        'SELECT * FROM users WHERE email=?',
-        [this.state.email],
-        (tx, results) => {
-          console.log(results.rows.item(0));
-          if (results.rows.length) {
-            this.setState({user: results.rows.item(0)});
+  _queryByEmail(){
+    let url = config.settings.serverPath + "/api/users/" + this.state.email;
+    fetch(url)
+        .then(response =>{
+            if (!response.ok){
+                Alert.alert('Error', response.status.toString());
+                throw Error('Error ' + response.status)
+            }
+            return response.json();
+        })
+        .then(user=>{
+          if (user){
+            this.setState({user:user})
           }
-        },
-      ),
-    );
-  }
-
-  openCallback() {
-    console.log('Profile Screen Database opened successfully'); 
-  }
-    
-  errorCallback(err) {
-    console.log('Error in opening the database: ' + err);
-  }
-
-  async _saveSettings(email) {
-    try {
-      await AsyncStorage.setItem('email', email);
-    } catch (error) {
-      console.log('## ERROR SAVING ITEM ##: ', error);
+        }).catch(error => {console.log(error)})
     }
+
+  _deleteAcc(){
+    Alert.alert(
+      'Confirm Deletion',
+      'Delete `' + this.state.email + '`?',
+      [{
+        text: 'No',
+        onPress: ()=>{},
+      },{
+        text:'Yes',
+        onPress:()=> {
+          Alert.alert('Account deleted', 'Back to login page')
+          let url = config.settings.serverPath + '/api/users/' + this.state.email;
+          fetch(url, {
+            method: 'DELETE',
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              email: this.state.email,
+            }),
+          }).then(response => {
+            if(!response.ok){
+              Alert.alert('Error' + response.status.toString())
+              throw Error('Error' + response.status1)
+            }
+            console.log(response)
+            return response.json();
+          }).then(responseJson => {
+            if (responseJson.affected ==0){
+              Alert.alert('Error deleting record');
+            }
+            this.props.route.params.resetData();
+            this.props.navigation.navigate('LoginScreen');
+          })
+        }
+      }]
+    )
   }
-
-  async _readSettings() {
-    try {
-      let email = await AsyncStorage.getItem('email');
-      if (email !== null) {
-        this.setState({email: email});
-      }else if (email !== this.props.route.params.params.email){
-        this.setState ({
-          name:this.props.route.params.params.username,
-          email:this.props.route.params.params.email,
-          signedin:this.props.route.params.params.signedin,
-          user: null,
-          });
-      }
-    } catch (error) {
-      console.log('## ERROR READING ITEM ##: ', error);
-    }
-  }
-
-
   render() {
     let user = this.state.user;
       return (
-        <View style={styles.container}>
+        <View style={externalstyles.container}>
             <Image
               style={styles.coverPhoto}
               source={{uri:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTUUZgqczMg7bPR2O7Sbty2laosPA-WXj24-6Y6dCpMJWI3cRio9PmSJTYAvo3i0ifxjo&usqp=CAU'}}
@@ -118,6 +118,22 @@ export default class ProfileScreen extends Component{
                 style={styles.profilePhoto}
                 source={{uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRCu_zlYqgRAA-Q_oEJX28TY-OoRK2Yi2rlyg&usqp=CAU'}}
               />
+              <TouchableOpacity onPress={() => {this.props.navigation.navigate('EditProfile',{
+                    user: user,
+                    refresh: this._queryByEmail,
+                  })}
+                }
+                >
+                  <View style={styles.aboutbutton}>
+                      <Text style ={styles.introtext}>Edit User Profile</Text>
+                  </View>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => {this._deleteAcc()}}>
+                  <View style={styles.deletebutton}>
+                      <Text style ={styles.deletetext}>Delete Account</Text>
+                  </View>
+              </TouchableOpacity>
+
             </View>
             <InputWithLabel
               textLabelStyle={styles.TextLabel}
@@ -135,7 +151,14 @@ export default class ProfileScreen extends Component{
               orientation={'vertical'}
               editable={false}
             />
-            <Text></Text>
+            <InputWithLabel
+                  textLabelStyle={styles.TextLabel}
+                  textInputStyle={styles.TextInput}
+                  label={'User Phone Number:'}
+                  value={(user ? user.phone:'').toString()}
+                  orientation={'vertical'}
+                  editable={false}
+            />
             <Text>{'\n'}</Text>
             <Button
                   title="Go back Home Screen"
@@ -147,17 +170,6 @@ export default class ProfileScreen extends Component{
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex:1,
-        flexDirection:'column',
-        backgroundColor: '#F0FFFF',
-        borderRadius: 4,
-        borderWidth: 0.5,
-        borderColor: '#d6d7da',
-        alignItems: 'center',
-        justifyContent:'flex-start',
-        padding:1,
-      },
     coverPhoto: {
         width: '100%',
         height: 180,
@@ -185,10 +197,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         alignSelf:'center',
       },
-    
     TextInput: {
         color: 'black',
-        //marginRight: 40,
         borderColor: '#ccc',
         borderWidth: 1,
         borderRadius: 5,
@@ -197,13 +207,24 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         alignSelf:'stretch',
+        textAlign:'center',
       },
     aboutbutton: {
         height:30,
         width: 200,
         alignItems: 'center',
+        justifyContent: 'center',
         backgroundColor: '#C3FDB8',
         borderRadius:15,
+      },
+    deletebutton: {
+        height:30,
+        width: 200,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#e86d6d',
+        borderRadius:15,
+        marginTop: 15
       },
     introtext:{
         alignItems: 'center',
@@ -212,5 +233,16 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         color: '#046307',
       },
+      deletetext:{
+        fontSize:18,
+        textAlign:'center',
+        color: '#fffb05',
+      },
+      touch: {
+        alignItems: 'flex-start',
+        justifyContent: 'flex-start',
+        backgroundColor: '#00BFFF',
+        borderRadius: 10,
+        width:140,
+      }
     });
-
