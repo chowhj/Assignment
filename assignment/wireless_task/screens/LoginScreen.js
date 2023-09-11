@@ -51,14 +51,12 @@ export default class LoginScreen extends Component{
                     })
                     console.log(user.username, " login success")
                     this.props.navigation.navigate("Drawer",{
-                        screen:'Home Page',
-                        params:{
-                            username: this.state.username,
-                            email: this.state.email,
-                            signedin: this.state.signedin,
-                            resetData: this.resetData,
+                        username: this.state.username,
+                        email: this.state.email,
+                        signedin: this.state.signedin,
+                        resetData: this.resetData,
                         }
-                    })
+                    )
                 }else {
                     console.log("Login failed")
                     this.setState({
