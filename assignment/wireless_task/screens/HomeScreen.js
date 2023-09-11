@@ -4,6 +4,8 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Iconfont from 'react-native-vector-icons/Fontisto';
+import { externalstyles } from "../style/Externalstylesheet";
+
 
 export default class HomeScreen extends Component{
 
@@ -12,13 +14,14 @@ export default class HomeScreen extends Component{
     this.state = {
         name:this.props.route.params?.username,
         email:this.props.route.params?.email,
+        id:this.props.route.params?.id,
         signedin:this.props.route.params?.signedin,
       };
     }
 
     render(){
         return(
-            <View style={styles.container}>
+            <View style={externalstyles.container}>
               <View style ={styles.welcome}>
                 <ScrollView>
                   <Text style ={styles.welcomeText}>
@@ -26,7 +29,7 @@ export default class HomeScreen extends Component{
                       <Iconfont
                         name="hotel"
                         size={30}
-                        color={'#6A287E'} 
+                        color={'#6960EC'} 
                       />
                   </Text>
                   <Text style={{fontSize:22,color:'#483D8B'}}>Hotel Room View </Text>
@@ -38,7 +41,14 @@ export default class HomeScreen extends Component{
                   <Image source={require('../img/homescreen/hotelhome5.jpeg')} style={{width: 120, height: 120, margin: 10}} />
                   </ScrollView>
                   <Text style={styles.displaytext}>DISCOVER OUR HOTELS & RESORTS IN SOUTHEAST ASIA</Text>
-                  <Text style ={{fontSize:22,color:'#483D8B'}}>About</Text>
+                  <Text style ={{fontSize:22,color:'#483D8B'}}>
+                      About
+                      <Ionicons
+                            name="information-circle-sharp"
+                            size={30}
+                            color={'#08A04B'} 
+                        />
+                  </Text>
                   <TouchableOpacity onPress = {() => this.props.navigation.navigate('About')}>
                     <View style = {styles.aboutbutton}>
                       <Text style={styles.introtext}>Superstar Villa Hotel Resort, Seasense is, 
@@ -54,7 +64,13 @@ export default class HomeScreen extends Component{
                       <Text style={styles.bookingtext}>Booking Room</Text>
                     </View>
                   </TouchableHighlight>
-                  <Text style ={{fontSize:22,color:'#483D8B'}}>Room Recommendation</Text>
+                  <Text style ={{fontSize:22,color:'#483D8B'}}>Room Recommendation
+                    <Iconfont
+                          name="room"
+                          size={30}
+                          color={'#6A287E'} 
+                        />
+                  </Text>
                   <ScrollView>
                     <Text style={{fontSize:20}}>Deluxe Beachfront and Ocean Rooms(Only steps away from the shores and fine sand of the East Coast)</Text>
                     <Image source={require('../img/homescreen/hotelroom1.jpg')} style={{width: 180, height: 180, margin: 10}} />
@@ -77,15 +93,6 @@ export default class HomeScreen extends Component{
 };
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#F0FFFF',
-    borderRadius: 4,
-    borderWidth: 0.5,
-    borderColor: '#d6d7da',
-    alignItems: 'center',
-    justifyContent:'flex-start',
-    padding:1,
-  },
   welcome: {
     alignItems: 'flex-start',
     justifyContent:'center',
