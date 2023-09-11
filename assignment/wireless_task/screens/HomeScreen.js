@@ -12,9 +12,8 @@ export default class HomeScreen extends Component{
   constructor(props) {
     super(props);
     this.state = {
-        name:this.props.route.params?.username,
+        username:this.props.route.params?.username,
         email:this.props.route.params?.email,
-        id:this.props.route.params?.id,
         signedin:this.props.route.params?.signedin,
       };
     }
