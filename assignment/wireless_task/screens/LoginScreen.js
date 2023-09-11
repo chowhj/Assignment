@@ -8,6 +8,7 @@ import {
 import { TouchableOpacity } from "react-native-gesture-handler";
 let SQLite = require('react-native-sqlite-storage');
 
+let config = require('../Config');
 export default class LoginScreen extends Component{
     constructor(props){
         super(props);
@@ -17,18 +18,10 @@ export default class LoginScreen extends Component{
             password:"",
             signedin: false,
         };
-        this.db = SQLite.openDatabase({
-            name: 'credentialsdb.db',
-            createFromLocation: '~credentialsdb.db'
-        },
-        this.openCallBack,
-        this.errorCallBack
-        );
         this.resetData=this.resetData.bind(this)
     }
     
-    componentDidMount(){this.resetData()
-    }
+    componentDidMount(){this.resetData()}
 
     resetData(){
         this.setState({
@@ -39,50 +32,41 @@ export default class LoginScreen extends Component{
         });
     }
 
-    openCallBack(){
-        console.log("Successfull open the database")
-    }
-    
-    errorCallBack(err){
-        console.log("Error"  + err)
-    }
-
     queryByEmail(){
-        this.db.transaction(tx=>
-            tx.executeSql("SELECT * FROM users WHERE email=?",[this.state.email], (tx,results)=>{
-                if (results.rows.length && results.rows.item(0).password == this.state.password){
+        let url = config.settings.serverPath + "/api/users/" + this.state.email;
+        fetch(url)
+            .then(response =>{
+                if (!response.ok){
+                    Alert.alert('Error', response.status.toString());
+                    throw Error('Error ' + response.status)
+                }
+                return response.json();
+            })
+            .then(user=>{
+                if (user && user.password == this.state.password){
                     this.setState({
-                        username:results.rows.item(0).username,
-                        password: "",
-                        signedin: true
-                    });
-                    console.log(this.state.username, " login success");
-                    this.props.navigation.navigate("ProfileScreen",{
-                        screen: 'Profile',
-                        params:{
-                        username: this.state.username,
-                        signedin: this.state.signedin,
-                        resetData: this.resetData
-                        }
+                        username: user.username,
+                        password: '',
+                        signedin:true
                     })
-                    this.props.navigation.navigate("HomeScreen",{
-                        screen: 'Home Page',
-                        params:{
+                    console.log(user.username, " login success")
+                    this.props.navigation.navigate("Drawer",{
                         username: this.state.username,
                         email: this.state.email,
                         signedin: this.state.signedin,
-                        resetData: this.resetData
-                    }})
-                }else{
-                    console.log("login failed");
+                        resetData: this.resetData,
+                        }
+                    )
+                }else {
+                    console.log("Login failed")
                     this.setState({
-                        password: "",
-                    });
+                        password:"",
+                    })
                     this.sendAlert("Wrong email or password")
-                };
-            }, Error=>{console.log(Error)}),
-        )
-    }
+                }
+            }).catch(error => {console.log(error)})
+        }
+
     login(){
         if (this.state.email == "")
             {this.sendAlert("Email cannot be empty")
@@ -103,6 +87,7 @@ export default class LoginScreen extends Component{
     render(){
         return(
             <View style={styles.container}>
+                <Text style={styles.title}> Superstar Villa Hotel Resort Booking App</Text>
                 <Text style={styles.loginTitle}>Login to continue</Text>
                 <View style={styles.inputView}>
                     <TextInput style={{fontSize:18}}
@@ -144,18 +129,25 @@ export default class LoginScreen extends Component{
 const styles=StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#fff",
+        backgroundColor: "#D5FFD0",
         alignItems: "center",
         justifyContent: "center",
       },
-    loginTitle:{
-        fontSize:40,
+    title:{
+        fontSize:45,
+        fontWeight:'900',
+        color: 'darkblue',
+        textAlign: 'center',
         marginBottom: 50,
-        color: 'blue',
+    },
+    loginTitle:{
+        fontSize:30,
+        marginBottom: 30,
+        color: 'indigo',
         fontWeight: "bold"
     },
     inputView:{
-        backgroundColor: "#ffc0cb",
+        backgroundColor: "#40F8FF",
         borderRadius:30,
         alignItems:'center',
         width: "70%",
@@ -168,12 +160,12 @@ const styles=StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         margin: 40,
-        backgroundColor: "#FF1493",
+        backgroundColor: "#C4DFDF",
       },
     loginText:{
         fontWeight:"bold",
         fontSize:20,
-        color:"white",
+        color:"#3D6B55",
     },
     signupText:{
         color:'blue'
