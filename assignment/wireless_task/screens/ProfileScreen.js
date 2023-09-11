@@ -4,13 +4,13 @@ import {
     View,
     Image,
     StyleSheet,
-    TouchableHighlight,
+    TouchableWithoutFeedback,
     TouchableOpacity,
     SafeAreaView,
-    StatusBar,
+    Alert,
     Button,
     } from "react-native";
-
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import {InputWithLabel} from '../../UI';
 import { LogBox } from 'react-native';
 
@@ -64,30 +64,46 @@ export default class ProfileScreen extends Component{
           }
         }).catch(error => {console.log(error)})
     }
-  // _queryByEmail() {
-  //   this.db.transaction(tx =>
-  //     tx.executeSql(
-  //       'SELECT * FROM users WHERE email=?',
-  //       [this.state.email],
-  //       (tx, results) => {
-  //         console.log(results.rows.item(0));
-  //         if (results.rows.length) {
-  //           this.setState({user: results.rows.item(0), id: results.rows.item(0).id});
-  //         }
-  //       },
-  //     ),
-  //   );
-  // }
 
-  // openCallback() {
-  //   console.log('Profile Screen Database opened successfully'); 
-  // }
-    
-  // errorCallback(err) {
-  //   console.log('Error in opening the database: ' + err);
-  // }
-
-
+  _deleteAcc(){
+    Alert.alert(
+      'Confirm Deletion',
+      'Delete `' + this.state.email + '`?',
+      [{
+        text: 'No',
+        onPress: ()=>{},
+      },{
+        text:'Yes',
+        onPress:()=> {
+          Alert.alert('Account deleted', 'Back to login page')
+          let url = config.settings.serverPath + '/api/users/' + this.state.email;
+          fetch(url, {
+            method: 'DELETE',
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              email: this.state.email,
+            }),
+          }).then(response => {
+            if(!response.ok){
+              Alert.alert('Error' + response.status.toString())
+              throw Error('Error' + response.status1)
+            }
+            console.log(response)
+            return response.json();
+          }).then(responseJson => {
+            if (responseJson.affected ==0){
+              Alert.alert('Error deleting record');
+            }
+            this.props.route.params.resetData();
+            this.props.navigation.navigate('LoginScreen');
+          })
+        }
+      }]
+    )
+  }
   render() {
     let user = this.state.user;
       return (
@@ -110,7 +126,13 @@ export default class ProfileScreen extends Component{
                   <View style={styles.aboutbutton}>
                       <Text style ={styles.introtext}>Edit User Profile</Text>
                   </View>
-            </TouchableOpacity>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => {this._deleteAcc()}}>
+                  <View style={styles.deletebutton}>
+                      <Text style ={styles.deletetext}>Delete Account</Text>
+                  </View>
+              </TouchableOpacity>
+
             </View>
             <InputWithLabel
               textLabelStyle={styles.TextLabel}
@@ -201,8 +223,18 @@ const styles = StyleSheet.create({
         height:30,
         width: 200,
         alignItems: 'center',
+        justifyContent: 'center',
         backgroundColor: '#C3FDB8',
         borderRadius:15,
+      },
+    deletebutton: {
+        height:30,
+        width: 200,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#e86d6d',
+        borderRadius:15,
+        marginTop: 15
       },
     introtext:{
         alignItems: 'center',
@@ -211,4 +243,16 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         color: '#046307',
       },
+      deletetext:{
+        fontSize:18,
+        textAlign:'center',
+        color: '#fffb05',
+      },
+      touch: {
+        alignItems: 'flex-start',
+        justifyContent: 'flex-start',
+        backgroundColor: '#00BFFF',
+        borderRadius: 10,
+        width:140,
+      }
     });

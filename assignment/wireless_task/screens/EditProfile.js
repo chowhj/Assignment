@@ -8,8 +8,10 @@ import {
   ImageBackground,
   Dimensions,
   TouchableOpacity,
+  TouchableWithoutFeedback,
   Alert
 } from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import {InputWithLabel, PickerWithLabel, AppButton} from '../../UI';
 
 let config = require('../Config')
@@ -30,16 +32,6 @@ export default class EditProfile extends Component {
       password:'',
       user:{},
     };
-
-    // this._queryById = this._queryById.bind(this);
-    // this._update = this._update.bind(this);
-    // this._namecheck = this._namecheck.bind(this);
-
-    // this.db = SQLite.openDatabase(
-    //   {name: 'credentialsdb.db', createFromLocation: '~credentialsdb.db'},
-    //   this.openDb,
-    //   this.errorDb,
-    // );
   }
 
   componentDidMount() {
@@ -50,34 +42,12 @@ export default class EditProfile extends Component {
       password:this.props.route.params.user.password,
       user: this.props.route.params.user,
     })
-    // this._queryById();
   }
   
   componentDidUpdate() {
     this.props.navigation.setOptions({headerTitle: 'Edit User Profile ' + this.state.username});
     }
   
-
-  // _queryById() {
-  //   this.db.transaction(tx => {
-  //     tx.executeSql(
-  //       'SELECT * FROM users WHERE email = ?',
-  //       [this.state.id],
-  //       (tx, results) => {
-  //         if (results.rows.length) {
-  //           console.log(results.rows.item(0));
-            // this.setState({user: results.rows.item(0)});
-            // this.setState({
-            //   username: results.rows.item(0).username,
-            //   email: results.rows.item(0).email,
-            //   phone: results.rows.item(0).phone.toString(),
-            //   password: results.rows.item(0).password,
-            // });
-          // }
-  //       },
-  //     );
-  //   });
-  // }
   
   _update() {
     let url = config.settings.serverPath + '/api/users/' + this.state.email;
@@ -111,35 +81,6 @@ export default class EditProfile extends Component {
         }])
       }
     }).catch(error => {console.error (error)})
-
-
-    //   this.db.transaction(tx => {
-    //     tx.executeSql('UPDATE users SET username=?,phone=? ,password=? WHERE email=?', [
-    //       this.state.username,
-    //       this.state.phone,
-    //       this.state.password,
-    //       this.state.email,
-    //     ]);
-    //   });
-      
-    //   Alert.alert("Success","You have channged your user's information",[{
-    //     text: "OK",
-    //     onPress:()=>{
-    //         this.props.route.params.refresh();
-    //         this.props.navigation.goBack();
-    //     }
-    // }])
-    //   //console.log('Changed username:',this.state.username)
-    //   //console.log('Changed email: ',this.state.email)
-    //   //console.log('User ID : ',this.state.id)
-  }
-
-  openDb() {
-    console.log('Edit Profile Screen Database opened');
-  }
-
-  errorDb(err) {
-    console.log('SQL Error: ' + err);
   }
   
   emailTestOK(email){
@@ -177,18 +118,6 @@ export default class EditProfile extends Component {
     }else{return false}
   }  
 
-
-  // _emailcheck(currentemail){
-  //   ori= this.state.user.email;
-  //   if(ori !== currentemail){
-  //       this.db.executeSql("SELECT * FROM users WHERE email=?",[this.state.email],results=>{
-  //         if(results.rows.length ==1){
-  //           this.setState({emailchange:false});
-  //           this.sendAlert("Warning","This email had been registered by other users");
-  //         }
-  //      })}
-      //console.log(this.state.emailchange,'2')
-  // }
   
   _validation(){
     if (!this.testingOK(this.state.username, "Username")){return false}
@@ -213,6 +142,17 @@ export default class EditProfile extends Component {
       <View style={styles.container}>
         <ScrollView>
           <ImageBackground source={{uri:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQe8afj_s3VbdfdBbIBBL7rwDMo3uS5M-n_wQ&usqp=CAU'}} style={styles.image}> 
+            <View style={{alignSelf:"flex-start"}}>
+              <TouchableWithoutFeedback
+                onPress={() => {this.props.navigation.navigate('ProfileScreen');
+                }}
+              >
+                <View style ={styles.touch} flexDirection="row">
+                  <Ionicons name="arrow-back" size={25} color={'#93FFE8'} />
+                  <Text style = {{color:'#F0FFFF',fontWeight:'bold',fontSize:18}}>Back to Profile</Text>
+                </View>
+              </TouchableWithoutFeedback>
+            </View>
             <InputWithLabel
               textLabelStyle={styles.TextLabel}
               textInputStyle={styles.TextInput}
@@ -223,18 +163,6 @@ export default class EditProfile extends Component {
               }}
               orientation={'vertical'}
             />
-            {/* <InputWithLabel
-              textLabelStyle={styles.TextLabel}
-              textInputStyle={styles.TextInput}
-              label={'User Email :'}
-              value={this.state.email}
-              onChangeText={email => {
-                this.setState({email});
-              }}
-              onSubmitEditing={ () => this._emailcheck(this.state.email) } 
-              keyboardType={'email-address'}
-              orientation={'vertical'}
-            /> */}
             <InputWithLabel
               textLabelStyle={styles.TextLabel}
               textInputStyle={styles.TextInput}
@@ -343,4 +271,11 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#DCD0FF',
   },
+  touch: {
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
+    backgroundColor: '#00BFFF',
+    borderRadius: 10,
+    width:150,
+  }
 });
