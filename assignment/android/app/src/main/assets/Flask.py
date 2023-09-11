@@ -31,6 +31,7 @@ def show(email):
     else:
         return jsonify(None), 200
 
+
 @app.route('/api/users', methods=['POST'])
 def save():
     if not request.json:
@@ -48,14 +49,73 @@ def save():
     cursor = db.cursor()
     cursor.execute('INSERT INTO users(username,password,email,phone,createDate) VALUES (?,?,?,?,?)',
                    new_user)
-    place_id = cursor.lastrowid
+    user_id = cursor.lastrowid
     db.commit()
 
-    response = {'id':place_id,
+    response = {'id':user_id,
                 'affected':db.total_changes}
     
     db.close()
     return jsonify(response), 201
+
+
+@app.route('/api/users/<string:email>',methods=['PUT'])
+def update(email):
+    if not request.json:
+        abort(400)
+    if 'email' not in request.json:
+        abort(400)
+    if request.json['email'] != email:
+        abort(400)
+    
+    update_user = (
+        request.json['username'],
+        request.json['password'],
+        request.json['phone'],
+        email,
+    )
+
+    db = sqlite3.connect(DB)
+    cursor = db.cursor()
+
+    cursor.execute("UPDATE users SET username=?, password=?, phone=? WHERE email=?"
+    ,update_user)
+
+    db.commit()
+
+    response ={
+        'email': email,
+        'affected': db.total_changes,
+    }
+
+    db.close()
+
+    return jsonify(response), 201
+
+
+@app.route('/api/users/<string:email>', methods = ['DELETE'])
+def delete(email):
+    if not request.json:
+        abort(400)
+    if 'email' not in request.json:
+        abort(400)
+    if request.json['email'] != email:
+        abort(400)
+    db = sqlite3.connect(DB)
+    cursor = db.cursor()
+
+    cursor.execute('DELETE FROM users WHERE email=?', (email,))
+
+    db.commit()
+
+    response = {
+        'email': email,
+        'affected': db.total_changes,
+    }
+
+    db.close()
+    return jsonify(response),201
+
 
 if __name__ == '__main__':
     parser = ArgumentParser()

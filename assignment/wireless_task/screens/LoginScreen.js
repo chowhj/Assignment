@@ -4,11 +4,14 @@ import {
     View,
     TextInput,
     StyleSheet,
-    Alert} from "react-native";
+    Alert,
+    LogBox} from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
-let SQLite = require('react-native-sqlite-storage');
-
 let config = require('../Config');
+LogBox.ignoreLogs([
+    'Non-serializable values were found in the navigation state',
+  ]);
+
 export default class LoginScreen extends Component{
     constructor(props){
         super(props);
@@ -16,7 +19,6 @@ export default class LoginScreen extends Component{
             username:"",
             email:"",
             password:"",
-            signedin: false,
         };
         this.resetData=this.resetData.bind(this)
     }
@@ -28,7 +30,6 @@ export default class LoginScreen extends Component{
             username: "",
             email:"",
             password: "",
-            signedin: false,
         });
     }
 
@@ -46,19 +47,14 @@ export default class LoginScreen extends Component{
                 if (user && user.password == this.state.password){
                     this.setState({
                         username: user.username,
-                        password: '',
-                        signedin:true
                     })
                     console.log(user.username, " login success")
                     this.props.navigation.navigate("Drawer",{
-                        screen:'Home Page',
-                        params:{
-                            username: this.state.username,
-                            email: this.state.email,
-                            signedin: this.state.signedin,
-                            resetData: this.resetData,
+                        username: this.state.username,
+                        email: this.state.email,
+                        resetData: this.resetData,
                         }
-                    })
+                    )
                 }else {
                     console.log("Login failed")
                     this.setState({
@@ -162,11 +158,11 @@ const styles=StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         margin: 40,
-        backgroundColor: "#C4DFDF",
+        backgroundColor: "#ace737",
       },
     loginText:{
         fontWeight:"bold",
-        fontSize:20,
+        fontSize:25,
         color:"#3D6B55",
     },
     signupText:{
