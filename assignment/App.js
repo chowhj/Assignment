@@ -148,7 +148,10 @@ class MyDrawerComponent extends Component {
             onPress={() => {
               Alert.alert("Logging out", "Are you sure you want to log out?",[{
                 text:"Yes",
-                onPress:()=>{this.props.navigation.navigate("LoginScreen")},
+                onPress:()=>{
+                  route.params.resetData()
+                  this.props.navigation.navigate("LoginScreen",{signout:true})
+                },
                 style:'default'
               },{
                 text: "No",
