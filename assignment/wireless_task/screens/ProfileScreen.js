@@ -13,6 +13,7 @@ import {
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {InputWithLabel} from '../../UI';
 import { LogBox } from 'react-native';
+import { externalstyles } from "../style/Externalstylesheet";
 
 LogBox.ignoreLogs([
   'Non-serializable values were found in the navigation state',
@@ -107,7 +108,7 @@ export default class ProfileScreen extends Component{
   render() {
     let user = this.state.user;
       return (
-        <View style={styles.container}>
+        <View style={externalstyles.container}>
             <Image
               style={styles.coverPhoto}
               source={{uri:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTUUZgqczMg7bPR2O7Sbty2laosPA-WXj24-6Y6dCpMJWI3cRio9PmSJTYAvo3i0ifxjo&usqp=CAU'}}
@@ -169,17 +170,6 @@ export default class ProfileScreen extends Component{
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex:1,
-        flexDirection:'column',
-        backgroundColor: '#F0FFFF',
-        borderRadius: 4,
-        borderWidth: 0.5,
-        borderColor: '#d6d7da',
-        alignItems: 'center',
-        justifyContent:'flex-start',
-        padding:1,
-      },
     coverPhoto: {
         width: '100%',
         height: 180,
