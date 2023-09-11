@@ -1,5 +1,6 @@
 import 'react-native-gesture-handler';
 import React, {Component} from 'react';
+import SQLite from 'react-native-sqlite-storage';
 import {
   ScrollView,
   StyleSheet,
@@ -29,6 +30,7 @@ import HomeScreen from './wireless_task/screens/HomeScreen';
 import BookingScreen from './wireless_task/screens/BookingScreen';
 import ConfirmScreen from './wireless_task/screens/ConfirmScreen';
 import ProfileScreen from './wireless_task/screens/ProfileScreen';
+import PaymentScreen from './wireless_task/screens/PaymentScreen';
 import EditProfile from './wireless_task/screens/EditProfile';
 import SettingsScreen from './wireless_task/screens/SettingsScreen';
 import SignoutScreen from './wireless_task/screens/SignoutScreen';
@@ -224,44 +226,43 @@ function MyTab () {
   )
 }
 
-const DrawerNavigator=({route})=>{
-  const Drawer = createDrawerNavigator ()
-    return(
-        <Drawer.Navigator initialRouteName={'Home'}
-          drawerContent={props => <MyDrawerComponent {...props} />}
-          screenOptions={{
-            drawerActiveTintColor: 'darkslateblue',
-            drawerActiveBackgroundColor: 'skyblue',
-            drawerLabelStyle: {
-              marginLeft: -24,
-              fontFamily: 'EduQLDBeginner-Regular',
-            },
-            headerStyle: {
-              backgroundColor: '#00008B',
-            },
-            headerTitleAlign: 'center',
-            headerTintColor: '#fff',
-            headerTitleStyle: {
-              fontWeight: 'bold',
-            },
-           // headerRight: () => (
-              //<TouchableWithoutFeedback
-                  //onPress={() => this.props.navigation.navigate('Home')}>
-                  //</NavigationContainer><Ionicons name="arrow-back" size={25} color="#00FFFF" />
-              //</TouchableWithoutFeedback>
-            //)
-          }}
-        >
-        <Drawer.Screen
-            name="Home"
-            component={HomeScreen}
-            initialParams={route.params}
-            options={{
-              drawerIcon: ({ color }) => (
-                <Ionicons name="home-outline" size={20} color={color} />
-              ),
-        }} />
+const DrawerNavigator = ({ route }) => {
+  const Drawer = createDrawerNavigator();
 
+  return (
+    <Drawer.Navigator initialRouteName={'Home'} drawerContent={props => <MyDrawerComponent {...props} />}>
+      <Drawer.Screen
+        name="Home"
+        component={HomeScreen}
+        initialParams={route.params}
+        options={{
+          drawerIcon: ({ color }) => (
+            <Ionicons name="home-outline" size={20} color={color} />
+          ),
+        }}
+      />
+
+      <Drawer.Screen
+        name="Profile"
+        component={ProfileScreen}
+        initialParams={route.params}
+        options={{
+          drawerIcon: ({ color }) => (
+            <Icon name="user" size={20} color={color} />
+          ),
+        }}
+      />
+      
+      <Drawer.Screen
+        name="About"
+        component={AboutScreen}
+        options={{
+          drawerIcon: ({ color }) => (
+            <Ionicons name="information-outline" size={20} color={color} />
+          ),
+        }}
+      />
+=======
         <Drawer.Screen
             name="Profile"
             component={ProfileNav}
@@ -280,43 +281,56 @@ const DrawerNavigator=({route})=>{
               ),
         }} />
 
-        <Drawer.Screen
-            name="Booking"
-            component={BookingScreen}
+
+      <Drawer.Screen
+        name="Booking"
+        component={BookingScreen}
+        options={{
+          drawerIcon: ({ color }) => (
+            <Ionicons name="book-outline" size={20} color={color} />
+          ),
+        }}
+      />
+
+      <Drawer.Screen
+            name="Payment"
+            component={PaymentScreen}
             options={{
                 drawerIcon: ({ color }) => (
-                <Ionicons name="book-outline" size={20} color={color} />
+                <Ionicons name="star-outline" size={20} color={color} />
                 ),
-        }}/>
+        }}/>  
+      <Drawer.Screen
+        name="More"
+        component={MyTab}
+        options={{
+          drawerIcon: ({ color }) => (
+            <Ionicons name="add-outline" size={20} color={color} />
+          ),
+        }}
+      />
 
-        <Drawer.Screen
-            name="More"
-            component={MyTab}
-            options={{
-                drawerIcon: ({ color }) => (
-                <Ionicons name="add-outline" size={20} color={color} />
-                ),
-        }} />
+      <Drawer.Screen
+        name="Settings"
+        component={SettingsScreen}
+        options={{
+          drawerLabel: () => null,
+          drawerIcon: () => null,
+        }}
+      />
 
-        <Drawer.Screen
-            name="Settings"
-            component={SettingsScreen}
-            options={{
-                drawerLabel: () => null,
-                drawerIcon: () => null,
-        }} />
-
-        <Drawer.Screen
-            name="Signout"
-            component={SignoutScreen}
-            options={{
-                drawerLabel: () => null,
-                drawerIcon: () => null,
-                
-        }} />
+      <Drawer.Screen
+        name="Signout"
+        component={SignoutScreen}
+        options={{
+          drawerLabel: () => null,
+          drawerIcon: () => null,
+        }}
+      />
     </Drawer.Navigator>
-  )
+  );
 }
+
 
 const ProfileNav=({route})=>{
   const Profile=createStackNavigator()
@@ -327,7 +341,48 @@ const ProfileNav=({route})=>{
     </Profile.Navigator>
   )
 }
+
 export default class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      db: null,
+    };
+  }
+
+  componentDidMount() {
+    this.initDatabase();
+  }
+
+  initDatabase() {
+    const db = SQLite.openDatabase(
+      { name: 'mydatabase.db', location: 'default' },
+      () => {
+        console.log('Database opened successfully');
+        db.transaction((tx) => {
+          tx.executeSql(
+            `CREATE TABLE IF NOT EXISTS rooms (
+              id INTEGER PRIMARY KEY AUTOINCREMENT,
+              roomNumber TEXT,
+              name TEXT,
+              image BLOB,
+              price TEXT,
+              occupancy INTEGER,
+              isCheckedIn TEXT,
+              isRoomNumberVisible INTEGER
+            );`
+          );
+        });
+        this.setState({ db });
+      },
+      (error) => {
+        console.error('Error opening database: ', error);
+      }
+    );
+
+    this.setState({ db });
+  }
+
   render () {
     return (
       <NavigationContainer>
@@ -335,8 +390,10 @@ export default class App extends Component {
           <Stack.Screen name="LoginScreen" component={LoginScreen} options={{headerShown:false}}/>
           <Stack.Screen name="SignupScreen" component={SignupScreen} options={{headerShown:false}}/>
 
+          <Stack.Screen name="Payment" component={PaymentScreen} />
           <Stack.Screen name='Drawer' component={DrawerNavigator} options={{headerShown:false}}/>
           <Stack.Screen name='ConfirmScreen' component={ConfirmScreen} options={{ headerShown: true, title: 'Confirm Reservation' }} />
+
         </Stack.Navigator>
       </NavigationContainer>
     );
