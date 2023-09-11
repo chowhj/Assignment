@@ -119,7 +119,7 @@ export default class AboutScreen extends Component{
             <SafeAreaView style={externalstyles.container}>
                 <View style={styles.welcome}>
                 <TouchableWithoutFeedback
-                   onPress={() => {this.props.navigation.navigate('Drawer',{screen:'Home'});
+                   onPress={() => {this.props.navigation.navigate('Home');
                    }}
                 >
                   <View style ={styles.touch} flexDirection="row">

@@ -93,6 +93,30 @@ def update(email):
     return jsonify(response), 201
 
 
+@app.route('/api/users/<string:email>', methods = ['DELETE'])
+def delete(email):
+    if not request.json:
+        abort(400)
+    if 'email' not in request.json:
+        abort(400)
+    if request.json['email'] != email:
+        abort(400)
+    db = sqlite3.connect(DB)
+    cursor = db.cursor()
+
+    cursor.execute('DELETE FROM users WHERE email=?', (email,))
+
+    db.commit()
+
+    response = {
+        'email': email,
+        'affected': db.total_changes,
+    }
+
+    db.close()
+    return jsonify(response),201
+
+
 if __name__ == '__main__':
     parser = ArgumentParser()
     parser.add_argument('-p', '--port', default=5000, type=int, help='port to listen on')

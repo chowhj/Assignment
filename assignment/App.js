@@ -41,6 +41,10 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import {LogBox} from 'react-native';
 LogBox.ignoreLogs (['EventEmitter.removeListener']);
+LogBox.ignoreLogs([
+  'Non-serializable values were found in the navigation state',
+]);
+
 
 
 //const Tab = createBottomTabNavigator ();
@@ -317,7 +321,7 @@ const ProfileNav=({route})=>{
   return(
     <Profile.Navigator initialRouteName='ProfileScreen'>
       <Profile.Screen name='ProfileScreen' component={ProfileScreen} initialParams={route.params} options={{headerTitle: 'Profile',headerShown:false}}/>
-      <Profile.Screen name='EditProfile' component={EditProfile} initialParams={route.params} options={{headerTitle: 'Edit Profile'}}/>
+      <Profile.Screen name='EditProfile' component={EditProfile} initialParams={route.params} options={{headerTitle: 'Edit Profile',headerShown:false}}/>
     </Profile.Navigator>
   )
 }
