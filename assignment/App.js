@@ -24,12 +24,12 @@ import 'react-native-gesture-handler'
 import PropTypes from 'prop-types'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Icon from 'react-native-vector-icons/AntDesign';
-import io from 'socket.io-client';
 import AboutScreen from './wireless_task/screens/AboutScreen';
 import HomeScreen from './wireless_task/screens/HomeScreen';
 import BookingScreen from './wireless_task/screens/BookingScreen';
 import ConfirmScreen from './wireless_task/screens/ConfirmScreen';
 import ProfileScreen from './wireless_task/screens/ProfileScreen';
+import EditProfile from './wireless_task/screens/EditProfile';
 import SettingsScreen from './wireless_task/screens/SettingsScreen';
 import SignoutScreen from './wireless_task/screens/SignoutScreen';
 import LoginScreen from './wireless_task/screens/LoginScreen';
@@ -256,10 +256,9 @@ const DrawerNavigator=({route})=>{
               ),
         }} />
 
-
         <Drawer.Screen
             name="Profile"
-            component={ProfileScreen}
+            component={ProfileNav}
             initialParams={route.params}
             options={{
                 drawerIcon: ({ color }) => (
@@ -312,6 +311,16 @@ const DrawerNavigator=({route})=>{
     </Drawer.Navigator>
   )
 }
+
+const ProfileNav=({route})=>{
+  const Profile=createStackNavigator()
+  return(
+    <Profile.Navigator initialRouteName='ProfileScreen'>
+      <Profile.Screen name='ProfileScreen' component={ProfileScreen} initialParams={route.params} options={{headerTitle: 'Profile',headerShown:false}}/>
+      <Profile.Screen name='EditProfile' component={EditProfile} initialParams={route.params} options={{headerTitle: 'Edit Profile'}}/>
+    </Profile.Navigator>
+  )
+}
 export default class App extends Component {
   render () {
     return (
@@ -322,7 +331,6 @@ export default class App extends Component {
 
           <Stack.Screen name='Drawer' component={DrawerNavigator} options={{headerShown:false}}/>
           <Stack.Screen name='ConfirmScreen' component={ConfirmScreen} options={{ headerShown: true, title: 'Confirm Reservation' }} />
-          
         </Stack.Navigator>
       </NavigationContainer>
     );
